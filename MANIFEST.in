@@ -1,0 +1,5 @@
+recursive-include assignmentxblock/templates *.html
+recursive-include assignmentxblock/locale *.po
+recursive-include assignmentxblock/locale *.mo
+recursive-include assignmentxblock/translations *.po
+recursive-include assignmentxblock/translations *.mo

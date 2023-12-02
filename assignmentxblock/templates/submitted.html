@@ -1,0 +1,22 @@
+{% load i18n %}
+
+{% if submission.result == 'not_graded' or submission is None %}
+{% include "components/instruction.html" %}
+{% endif %}
+
+{% if submission %}
+{% include "components/submission_status.html" %}
+{% endif %}
+
+{% if submission.result != 'not_graded' %}
+{% include "components/submission_response.html" %}
+{% endif %}
+
+{% if submission.result in "'unable_to_review','did_not_pass'" %}
+    {% include "components/submit_project.html" %}
+{% endif %}
+
+{% if submissions and submissions|length > 1 %}
+    {% include "components/submission_history.html" %}
+{% endif %}
+

@@ -1,0 +1,129 @@
+{% load i18n %}
+
+<div class="lpx-container">
+    <h3 class="lpx-heading-1">
+        {% if submission %}
+            {% trans 'Resubmit project' %}
+        {% else %}
+            {% trans 'Submit project' %}
+        {% endif %}
+    </h3>
+    
+    <div class='lpx-mb-2'>
+        <h5 class='lpx-heading-3'>{% trans 'Upload zip file' %}</h4>
+    
+        <p>{% trans 'Compress your files into a single zip file, up to 500 MB.' %}</p>
+    
+       <label for="file-input" class="lpx-btn lpx-btn-primary">{% trans 'Select file' %}</label>
+       
+       <input 
+       class='d-none' 
+       id="file-input" 
+       type="file" 
+       accept="{{file_input_accepts}}"
+        />
+    
+       <div id="file-upload-preview" class='d-none'>
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M9 17.75h6c.213 0 .39-.072.534-.216A.727.727 0 0 0 15.75 17a.725.725 0 0 0-.216-.535.726.726 0 0 0-.534-.215H9a.725.725 0 0 0-.534.216.726.726 0 0 0-.216.534c0 .213.072.391.216.535A.726.726 0 0 0 9 17.75zm0-4h6c.213 0 .39-.072.534-.216A.727.727 0 0 0 15.75 13a.725.725 0 0 0-.216-.535.726.726 0 0 0-.534-.215H9a.725.725 0 0 0-.534.216.726.726 0 0 0-.216.534c0 .213.072.391.216.535A.726.726 0 0 0 9 13.75zM6.308 21.5c-.505 0-.933-.175-1.283-.525a1.745 1.745 0 0 1-.525-1.283V4.308c0-.505.175-.933.525-1.283.35-.35.778-.525 1.283-.525h7.194a1.802 1.802 0 0 1 1.275.527l4.196 4.196a1.8 1.8 0 0 1 .527 1.275v11.194c0 .505-.175.933-.525 1.283-.35.35-.778.525-1.283.525H6.308zM13.5 7.6c0 .255.086.469.259.641a.871.871 0 0 0 .641.259H18L13.5 4v3.6z" fill="#576F8A"/>
+                </svg>
+    
+                <span id="chosen-file-name"></span>
+            </div>
+    
+            <span id="remove-file-btn">{% trans 'Delete' %}</span>
+       </div>
+    
+       <p id='file-error-message' class='d-none'>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M14.532 12.4166L9.20607 2.52594C8.82857 1.82469 7.82295 1.82469 7.44513 2.52594L2.11951 12.4166C2.03754 12.5688 1.99645 12.7397 2.00024 12.9125C2.00403 13.0854 2.05257 13.2543 2.14113 13.4028C2.22969 13.5513 2.35523 13.6743 2.50551 13.7598C2.65579 13.8453 2.82567 13.8904 2.99857 13.8906H13.6514C13.8244 13.8906 13.9945 13.8458 14.145 13.7604C14.2955 13.675 14.4212 13.552 14.51 13.4035C14.5987 13.2549 14.6474 13.0859 14.6513 12.9129C14.6551 12.7399 14.614 12.5689 14.532 12.4166ZM8.32576 12.3594C8.20215 12.3594 8.08131 12.3227 7.97853 12.254C7.87575 12.1854 7.79564 12.0878 7.74833 11.9736C7.70103 11.8593 7.68865 11.7337 7.71277 11.6124C7.73688 11.4912 7.79641 11.3798 7.88382 11.2924C7.97123 11.205 8.08259 11.1455 8.20383 11.1214C8.32507 11.0973 8.45073 11.1096 8.56494 11.1569C8.67914 11.2043 8.77675 11.2844 8.84543 11.3871C8.9141 11.4899 8.95076 11.6108 8.95076 11.7344C8.95076 11.9001 8.88491 12.0591 8.7677 12.1763C8.65049 12.2935 8.49152 12.3594 8.32576 12.3594ZM9.00451 6.07344L8.82513 9.88594C8.82513 10.0185 8.77246 10.1457 8.67869 10.2395C8.58492 10.3333 8.45774 10.3859 8.32513 10.3859C8.19253 10.3859 8.06535 10.3333 7.97158 10.2395C7.87781 10.1457 7.82513 10.0185 7.82513 9.88594L7.64576 6.075C7.64173 5.98393 7.65607 5.89299 7.68794 5.80758C7.7198 5.72218 7.76854 5.64407 7.83124 5.5779C7.89393 5.51173 7.96931 5.45886 8.05288 5.42245C8.13644 5.38603 8.22648 5.36681 8.31763 5.36594H8.3242C8.41597 5.36589 8.5068 5.38444 8.59121 5.42046C8.67561 5.45648 8.75185 5.50923 8.81531 5.57552C8.87877 5.64181 8.92814 5.72028 8.96044 5.80618C8.99275 5.89208 9.00731 5.98363 9.00326 6.07531L9.00451 6.07344Z" fill="#D82C0D"/>
+            </svg>
+            <span></span>
+       </p>
+    </div>
+
+   <div id='submission-note-container' class='d-none lpx-mb-2'>
+        <h5 class='lpx-heading-3'>{% trans 'Submission notes (not required)' %}</h5>
+
+        <p>{% trans 'Is there any part of the submission you want your mentor to pay special attention to?' %}</p>
+
+        <textarea id='submission-note' placeholder='{% trans "Enter content" %}'></textarea>
+   </div>
+
+   <div id="terms" class='d-none lpx-mb-2'>
+        <h5 class='lpx-heading-3'>{% trans 'Funix Honor Code' %}</h5>
+
+        <p>{% trans 'You need to agree to the following before submitting your assignment' %}</p>
+
+        <ul>
+            <li class='term-item'>
+                <label>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path fill="#fff" d="M5 5h14v14H5z"/>
+                        <path d="M5 21c-.55 0-1.02-.196-1.413-.587A1.926 1.926 0 0 1 3 19V5c0-.55.196-1.02.587-1.413A1.926 1.926 0 0 1 5 3h14c.55 0 1.02.196 1.413.587C20.803 3.98 21 4.45 21 5v14c0 .55-.196 1.02-.587 1.413A1.926 1.926 0 0 1 19 21H5zm0-2h14V5H5v14z" fill="#576F8A"/>
+                    </svg>
+
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path fill="#fff" d="M5 5h14v14H5z"/>
+                        <path d="m10.6 13.4-2.15-2.15a.948.948 0 0 0-.7-.275.948.948 0 0 0-.7.275.948.948 0 0 0-.275.7c0 .283.092.517.275.7L9.9 15.5c.2.2.433.3.7.3.267 0 .5-.1.7-.3l5.65-5.65a.948.948 0 0 0 .275-.7.948.948 0 0 0-.275-.7.948.948 0 0 0-.7-.275.948.948 0 0 0-.7.275L10.6 13.4zM5 21c-.55 0-1.02-.196-1.413-.587A1.926 1.926 0 0 1 3 19V5c0-.55.196-1.02.587-1.413A1.926 1.926 0 0 1 5 3h14c.55 0 1.02.196 1.413.587C20.803 3.98 21 4.45 21 5v14c0 .55-.196 1.02-.587 1.413A1.926 1.926 0 0 1 19 21H5z" fill="#0086FF"/>
+                    </svg>
+
+                    <input type='checkbox' />
+
+                    <p>{% trans "I have read Funix's definition of <a href='#'>plagiarism</a>, and I declare that this is my own work." %}</p>
+                </label>
+            </li>
+            <li class='term-item'>
+                <label>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path fill="#fff" d="M5 5h14v14H5z"/>
+                        <path d="M5 21c-.55 0-1.02-.196-1.413-.587A1.926 1.926 0 0 1 3 19V5c0-.55.196-1.02.587-1.413A1.926 1.926 0 0 1 5 3h14c.55 0 1.02.196 1.413.587C20.803 3.98 21 4.45 21 5v14c0 .55-.196 1.02-.587 1.413A1.926 1.926 0 0 1 19 21H5zm0-2h14V5H5v14z" fill="#576F8A"/>
+                    </svg>
+
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path fill="#fff" d="M5 5h14v14H5z"/>
+                        <path d="m10.6 13.4-2.15-2.15a.948.948 0 0 0-.7-.275.948.948 0 0 0-.7.275.948.948 0 0 0-.275.7c0 .283.092.517.275.7L9.9 15.5c.2.2.433.3.7.3.267 0 .5-.1.7-.3l5.65-5.65a.948.948 0 0 0 .275-.7.948.948 0 0 0-.275-.7.948.948 0 0 0-.7-.275.948.948 0 0 0-.7.275L10.6 13.4zM5 21c-.55 0-1.02-.196-1.413-.587A1.926 1.926 0 0 1 3 19V5c0-.55.196-1.02.587-1.413A1.926 1.926 0 0 1 5 3h14c.55 0 1.02.196 1.413.587C20.803 3.98 21 4.45 21 5v14c0 .55-.196 1.02-.587 1.413A1.926 1.926 0 0 1 19 21H5z" fill="#0086FF"/>
+                    </svg>
+
+                    <input type='checkbox' />
+
+                    <p>{% trans 'I have clearly attributed the source of all content taken from different sources, such as websites, books, forums, blogs, GitHub repositories, etc.' %}</p>
+                </label>
+            </li>
+            <li class='term-item'>
+                <label>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path fill="#fff" d="M5 5h14v14H5z"/>
+                        <path d="M5 21c-.55 0-1.02-.196-1.413-.587A1.926 1.926 0 0 1 3 19V5c0-.55.196-1.02.587-1.413A1.926 1.926 0 0 1 5 3h14c.55 0 1.02.196 1.413.587C20.803 3.98 21 4.45 21 5v14c0 .55-.196 1.02-.587 1.413A1.926 1.926 0 0 1 19 21H5zm0-2h14V5H5v14z" fill="#576F8A"/>
+                    </svg>
+
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path fill="#fff" d="M5 5h14v14H5z"/>
+                        <path d="m10.6 13.4-2.15-2.15a.948.948 0 0 0-.7-.275.948.948 0 0 0-.7.275.948.948 0 0 0-.275.7c0 .283.092.517.275.7L9.9 15.5c.2.2.433.3.7.3.267 0 .5-.1.7-.3l5.65-5.65a.948.948 0 0 0 .275-.7.948.948 0 0 0-.275-.7.948.948 0 0 0-.7-.275.948.948 0 0 0-.7.275L10.6 13.4zM5 21c-.55 0-1.02-.196-1.413-.587A1.926 1.926 0 0 1 3 19V5c0-.55.196-1.02.587-1.413A1.926 1.926 0 0 1 5 3h14c.55 0 1.02.196 1.413.587C20.803 3.98 21 4.45 21 5v14c0 .55-.196 1.02-.587 1.413A1.926 1.926 0 0 1 19 21H5z" fill="#0086FF"/>
+                    </svg>
+
+                    <input type='checkbox' />
+
+                    <p>{% trans "I understand that Funix regularly checks submissions for copyright infringement and violations of the Funix Student Code of Conduct, and failure to comply with the <a href='#'>Funix Honor Code</a> may result in to cancel my subscription." %}</p>
+                </label>
+            </li>
+        </ul>
+   </div>
+
+   <form id='submit-form'>
+        <button id='submit-btn' class='d-none lpx-btn lpx-btn-primary lpx-btn-disabled'>{% trans 'Submit Project' %}</button>
+   </form>
+
+</div>
+
+<div id="confirm-submit-modal" class="backdrop d-none">
+    <div id="confirm-submit-prompt">
+        <p class='lpx-heading-1 lpx-mb-1'>{% trans 'Confirmation of submission' %}</p>
+        <p id="confirm-submit-text">{% trans 'You confirm that you will submit this project. Once submitted, you will not be able to edit or submit new work until you receive feedback.' %}</p>
+        <div id="confirm-submit-btns">
+            <button id="cancel-submit-btn" class='lpx-btn lpx-btn-sm lpx-btn-secondary'>{% trans 'Cancel' %}</button>
+            <button id="confirm-submit-btn" class='lpx-btn lpx-btn-sm lpx-btn-primary'>{% trans 'Confirm' %}</button>
+        </div>
+    </div>
+</div>

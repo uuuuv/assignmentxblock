@@ -1,0 +1,186 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: templates/components/instruction.html
+msgid "Instructions for submission"
+msgstr "Hướng dẫn nộp bài"
+
+#: templates/components/instruction.html
+msgid "For this part of the project, you will choose a brand or product within the travel industry (airline, hospitality, etc...), and you'll create an SEM campaign for it."
+msgstr "Đối với phần này của dự án, bạn sẽ chọn một thương hiệu hoặc sản phẩm trong ngành du lịch (hãng hàng không, khách sạn, v.v.) và bạn sẽ tạo chiến dịch SEM cho nó."
+
+#: templates/components/instruction.html
+msgid "Step"
+msgstr "Bước"
+
+#: templates/components/instruction.html
+msgid "State your <strong>campaign objective</strong>"
+msgstr "Nêu rõ <strong>mục tiêu chiến dịch</strong> của bạn"
+
+#: templates/components/instruction.html
+msgid "Identify 5 Key terms using Google Trends and justify why you selected those specific terms in 2 to 3 sentences. Some things to keep in mind when selecting key terms include:"
+msgstr "Xác định 5 thuật ngữ chính bằng cách sử dụng Google Xu hướng và giải thích lý do tại sao bạn chọn những thuật ngữ cụ thể đó trong 2 đến 3 câu. Một số điều cần lưu ý khi lựa chọn các thuật ngữ chính bao gồm:"
+
+#: templates/components/instruction.html
+msgid "Next, use Google Keyword Planner to create a list of 5 keywords and justify in 2 to 3 sentences why you think these keywords should be in your campaign. The questions to keep in mind now are: Do they have enough search volume?, Do they match your campaign objective?, Is the max CPC reasonable?"
+msgstr "Tiếp theo, sử dụng Công cụ lập kế hoạch từ khóa của Google để tạo danh sách 5 từ khóa và giải thích bằng 2 đến 3 câu tại sao bạn cho rằng những từ khóa này nên có trong chiến dịch của mình. Các câu hỏi cần lưu ý lúc này là: Chúng có đủ lượng tìm kiếm không?, Chúng có phù hợp với mục tiêu chiến dịch của bạn không?, CPC tối đa có hợp lý không?"
+
+#: templates/components/instruction.html
+msgid "Evaluate"
+msgstr "Đánh giá"
+
+#: templates/components/instruction.html
+msgid "Evaluate the performance of a <a href='#'>Google Search campaign based on the data provided</a>. Consider the following:"
+msgstr "Đánh giá hiệu suất của <a href='#'>Chiến dịch tìm kiếm trên Google dựa trên dữ liệu được cung cấp</a>. Hãy xem xét những điều sau:"
+
+#: templates/components/instruction.html
+msgid "Which ad types perform better?"
+msgstr "Loại quảng cáo nào hoạt động tốt hơn?"
+
+#: templates/components/instruction.html
+msgid "Which keywords should be paused?"
+msgstr "Những từ khóa nào nên tạm dừng?"
+
+#: templates/components/instruction.html
+msgid "Which should receive more budget?"
+msgstr "Cái nào sẽ nhận được nhiều ngân sách hơn?"
+
+#: templates/components/instruction.html
+msgid "Suggest <strong>5 optimizations</strong> to help the campaign perform better and meet the goals. Add your optimization suggestions and the justification for them in the appropriate tab."
+msgstr "Đề xuất <strong>5 cách tối ưu hóa</strong> để giúp chiến dịch hoạt động tốt hơn và đạt được mục tiêu. Thêm đề xuất tối ưu hóa của bạn và lý do giải thích cho chúng trong tab thích hợp."
+
+#: templates/components/submission_history.html
+msgid "Select another submitted project"
+msgstr "Chọn một dự án đã nộp khác"
+
+#: templates/components/submission_history.html
+msgid "Project submission history"
+msgstr "Lịch sử nộp dự án"
+
+#: templates/components/submission_response.html
+msgid "point that need to be changed"
+msgstr "điểm cần thay đổi"
+
+#: templates/components/submission_response.html
+msgid "points that need to be changed"
+msgstr "điểm cần thay đổi"
+
+#: templates/components/submission_response.html
+msgid "Your project cannot be considered. Please resubmit after you resolve the issue noted by your reviewer below."
+msgstr "Dự án của bạn không thể được xem xét. Vui lòng gửi lại sau khi bạn giải quyết vấn đề được người đánh giá của bạn lưu ý bên dưới."
+
+#: templates/components/submission_status.html
+msgid "Submission Results"
+msgstr "Kết quả bài nộp"
+
+#: templates/components/submission_status.html
+msgid "Submission date: "
+msgstr "Ngày nộp: "
+
+#: templates/components/submission_status.html
+msgid "Download Submission"
+msgstr "Tải xuống bài đã nộp"
+
+#: templates/components/submission_status.html
+msgid "Submission In Review"
+msgstr "Bài nộp đang được chấm"
+
+#: templates/components/submission_status.html
+msgid "Submission Did Not Pass"
+msgstr "Dự án của bạn chưa đạt"
+
+#: templates/components/submission_status.html
+msgid "Submission Passed"
+msgstr "Dự án đã đạt"
+
+#: templates/components/submission_status.html
+msgid "Unable To Review"
+msgstr "Bài của bạn chưa sẵn sàng để đánh giá"
+
+#: templates/components/submit_project.html
+msgid "Submit project"
+msgstr "Nộp dự án"
+
+#: templates/components/submit_project.html
+msgid "Upload zip file"
+msgstr "Tải lên file zip"
+
+#: templates/components/submit_project.html
+msgid "Compress your files into a single zip file, up to 500 MB."
+msgstr "Nén các file của bạn thành một file zip duy nhất, tối đa 500 MB."
+
+#: templates/components/submit_project.html
+msgid "Select file"
+msgstr "Chọn file"
+
+#: templates/components/submit_project.html
+msgid "Submission notes (not required)"
+msgstr "Ghi chú nộp bài (không bắt buộc)"
+
+#: templates/components/submit_project.html
+msgid "Enter content"
+msgstr "Nhập nội dung"
+
+#: templates/components/submit_project.html
+msgid "Is there any part of the submission you want your mentor to pay special attention to?"
+msgstr "Có phần nào trong bài nộp bạn muốn mentor đặc biệt chú ý đến không?"
+
+#: templates/components/submit_project.html
+msgid "Funix Honor Code"
+msgstr "Funix Honor Code"
+
+#: templates/components/submit_project.html
+msgid "You need to agree to the following before submitting your assignment"
+msgstr "Bạn cần đồng ý các điều sau trước khi nộp bài"
+
+#: templates/components/submit_project.html
+msgid "I have read Funix's definition of <a href='#'>plagiarism</a>, and I declare that this is my own work."
+msgstr "Tôi đã đọc định nghĩa của Funix về <a href='#'>đạo văn</a>, và tôi khẳng định đây là bài làm của chính tôi."
+
+#: templates/components/submit_project.html
+msgid "I have clearly attributed the source of all content taken from different sources, such as websites, books, forums, blogs, GitHub repositories, etc."
+msgstr "Tôi đã ghi rõ nguồn của tất cả nội dung được lấy từ các nguồn khác nhau, như các trang web, sách, diễn đàn, blog, kho lưu trữ GitHub, v.v."
+
+#: templates/components/submit_project.html
+msgid "I understand that Funix regularly checks submissions for copyright infringement and violations of the Funix Student Code of Conduct, and failure to comply with the <a href='#'>Funix Honor Code</a> may result in to cancel my subscription."
+msgstr "Tôi hiểu rằng Funix thường xuyên kiểm tra bài nộp để phát hiện vi phạm bản quyền và vi phạm Đạo đức học sinh của Funix, và việc không tuân thủ <a href='#'>Funix Honor Code</a> có thể dẫn đến hủy bỏ việc đăng ký của tôi."
+
+#: templates/components/submit_project.html
+msgid "Submit Project"
+msgstr "Nộp dự án"
+
+#: templates/components/submit_project.html
+msgid "Resubmit project"
+msgstr "Nộp lại dự án"
+
+#: templates/components/submit_project.html
+msgid "Reubmit Project"
+msgstr "Nộp lại dự án"
+
+#: templates/components/submit_project.html
+msgid "Confirmation of submission"
+msgstr "Xác nhận nộp bài"
+
+#: templates/components/submit_project.html
+msgid "You confirm that you will submit this project. Once submitted, you will not be able to edit or submit new work until you receive feedback."
+msgstr "Bạn xác nhận sẽ nộp dự án này. Sau khi gửi bạn sẽ không thể chỉnh sửa hoặc nộp bài mới cho tới khi có phản hồi."
+
+#: templates/components/submission_response.html
+msgid "Feedback Details"
+msgstr "Nhận xét chi tiết"
+
+#: templates/components/submission_response.html
+msgid "Reviewer Note"
+msgstr "Nhận xét của mentor"
+
+#: 
+msgid "Must be .zip file."
+msgstr "Phải là file .zip"
+
+#: 
+msgid "File is too large."
+msgstr "File quá lớn."

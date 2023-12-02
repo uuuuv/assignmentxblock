@@ -1,0 +1,22 @@
+{% load i18n %}
+<div id='lpx'>
+
+  <div id="learningprojectxblock"></div>
+
+  <span
+    style="display: none"
+    id="portal-data"
+    data-get-initial-url="{{PORTAL_GET_SUBMISSION_URL}}"
+    data-email="{{email}}"
+    data-course-id="{{course_id}}"
+    data-assignment-name="{{assignment_name}}"
+    data-portal-submit-url="{{PORTAL_SUBMIT_URL}}"
+    data-allowed-file-types="{{allowed_file_types}}"
+    data-max-file-size="{{max_file_size}}"
+  ></span>
+
+  <div id="loading-modal">
+    <span class="loader"></span>
+  </div>
+</div>
+
