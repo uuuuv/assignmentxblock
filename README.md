@@ -45,6 +45,7 @@ AWS_S3_BUCKET_NAME: your_value
 PORTAL_SUBMIT_URL: your_value
 PORTAL_GET_SUBMISSION_URL: your_value
 ASSIGNMENTXBLOCK_STORAGE: your_value
+LMS_HOST: your_value
 """
     ),
     (
@@ -57,6 +58,7 @@ AWS_S3_BUCKET_NAME: your_value
 PORTAL_SUBMIT_URL: your_value
 PORTAL_GET_SUBMISSION_URL: your_value
 ASSIGNMENTXBLOCK_STORAGE: your_value
+LMS_HOST: your_value
 """
     )
 ])
