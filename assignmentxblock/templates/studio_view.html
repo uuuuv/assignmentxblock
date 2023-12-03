@@ -1,18 +1,58 @@
-<div>
-  <form id="asx-settings-form">
-    <h5>Settings</h5>
-    <div>
-      <label>Max File Size:</label>
+{% load i18n %}
+{% load static %}
+
+<div id='lpx-studio'>
+    <div class='lpx-form-group'>
+      <label>Max File Size <i>(MB)</i></label>
       <input name="max-file-size" type="number" value="{{max_file_size}}" />
     </div>
-    <div>
-      <label>Allowed File Types:</label>
+
+    <div class='lpx-form-group'>
+      <label>Allowed File Types <i>(separated by commas)</i></label>
       <input name="allowed-file-types" value="{{allowed_file_types}}" />
     </div>
-    <div>
-      <label>Score:</label>
-      <input name="score" type="number" min="1" value="{{score}}" />
+
+    <div class='lpx-form-group'>
+      <label>Score</label>
+      <input name="score" type="number" min="1" step="1" value="{{score}}" />
     </div>
-    <button>Submit</button>
-  </form>
+
+    <div class='lpx-form-group lpx-editor-field'>
+      <label>Instruction</label>
+      <div id='html_content'></div>
+    </div>
 </div>
+
+<div class="lpx_editor_buttons xblock-actions modal-actions">
+  <h3 class="sr">Actions</h3>
+  <ul>
+      <li class="action-item">
+          <a href="#" class="button action-primary lpx_save_button">{% trans "Save" %}</a>
+      </li>
+
+      <li class="action-item">
+          <a href="#" class="button lpx_cancel_button">{% trans "Cancel" %}</a>
+      </li>
+  </ul>
+</div>
+
+<script src="{% static 'js/vendor/tinymce/js/tinymce/tinymce.full.min.js' %}"></script>
+
+<script>
+  tinymce.init({
+    selector: "#html_content",
+    height: 450,
+    skin: "studio-tmce5",
+    branding: false,
+    plugins: [
+        "advlist autolink lists link image charmap print anchor",
+        "searchreplace visualblocks code",
+        "insertdatetime media table contextmenu paste"
+    ],
+    toolbar: "undo redo styleselect bold italic alignleft aligncenter alignright alignjustify bullist numlist outdent indent link image",
+    init_instance_callback: function (editor) {
+      editor.setContent(`{{html_content|safe}}`);
+    }
+});
+
+</script>

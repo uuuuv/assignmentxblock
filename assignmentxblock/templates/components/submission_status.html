@@ -4,8 +4,7 @@
   <div id="submission-status">
     
     <h3 class="lpx-heading-1">{% trans "Submission Results" %}</h3>
-  
-    <p id="submission-status-date">{% trans 'Submission date: ' %}{{ submission.date }}</p>
+    <p id="submission-status-date">{% trans 'Submission date: ' %}<span></span></p>
   
     <div id="submission-status-bar" class='{{ submission.result }}'>
       {% if submission.result == 'unable_to_review' or submission.result == 'did_not_pass' %}

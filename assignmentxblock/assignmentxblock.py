@@ -3,26 +3,16 @@ from web_fragments.fragment import Fragment
 from xblock.core import XBlock
 from .config import get_config
 import logging
-from xblock.fields import Boolean, Integer, List, Scope, String
+from xblock.fields import Integer, Scope, String, XMLString
 from django.template import Template, Context
-from django.http import JsonResponse
 from webob import Response
 from .fileupload import get_uploader
 from datetime import datetime
+from django.utils import timezone
+import pytz
 import os
 
-
-
 logger = logging.getLogger(__name__)
-
-HAS_NOT_SUBMITTED = 'has_not_submitted'
-NOT_GRADED = 'not_graded'
-DID_NOT_PASSED = 'did_not_pass'
-PASSED = 'passed'
-UNABLE_TO_REVIEW = 'unable_to_review'
-INTERNAL_SERVER_ERROR = 'internal_server_error'
-IS_IN_STUDIO = "is_in_studio"
-
 
 def get_template_path(status):
     if status in ['passed', 'did_not_pass', 'unable_to_review', 'not_graded']:
@@ -33,7 +23,7 @@ def get_template_path(status):
 CSS_PATH = 'static/css/assignmentxblock.css'
 JS_PATH = 'static/js/assignmentxblock.js'
 
-# @XBlock.needs("i18n")
+@XBlock.needs("i18n")
 @XBlock.needs("user")
 @XBlock.needs("user_state")
 class AssignmentXBlock(XBlock):
@@ -46,7 +36,7 @@ class AssignmentXBlock(XBlock):
     max_file_size = Integer(
         default=5,
         scope=Scope.settings,
-        help="Max file size (mb)"
+        help="Max file size (mb)",
     )
 
     allowed_file_types = String(
@@ -59,6 +49,12 @@ class AssignmentXBlock(XBlock):
         default=5,
         scope=Scope.settings,
         help="Max score"
+    )
+
+    html_content = XMLString(
+        help="HTML data for the project",
+        scope=Scope.content,
+        default=""
     )
 
     def max_score(self):
@@ -76,7 +72,7 @@ class AssignmentXBlock(XBlock):
     
     @property
     def course_id(self):
-        return str(self.xmodule_runtime.course_id)  # pylint: disable=no-member
+        return self.scope_ids.usage_id.context_key
     
     @property
     def assignment_name(self):
@@ -86,10 +82,10 @@ class AssignmentXBlock(XBlock):
     def in_studio_preview(self):
         return self.scope_ids.user_id is None
     
-    # @property
-    # def _(self):
-    #     i18nService = self.runtime.service(self, 'i18n')  # pylint: disable=invalid-name
-    #     return i18nService.ugettext
+    @property
+    def _(self):
+        i18nService = self.runtime.service(self, 'i18n')  # pylint: disable=invalid-name
+        return i18nService.ugettext
     
     def resource_string(self, path):
         data = pkg_resources.resource_string(__name__, path)
@@ -113,6 +109,7 @@ class AssignmentXBlock(XBlock):
     def studio_view(self, context=None):
         context = {
             "max_file_size": self.max_file_size,
+            "html_content": self.html_content,
             "allowed_file_types": self.allowed_file_types,
             "score": self.total_score
         }
@@ -122,6 +119,7 @@ class AssignmentXBlock(XBlock):
         template = Template(template_str)
         rendered_html = template.render(Context(context))
         frag = Fragment(rendered_html)
+        frag.add_css(self.resource_string("static/css/studio_view.css"))
         frag.add_javascript(self.resource_string("static/js/studio_view.js"))
         frag.initialize_js('AssignmentXBlock')
         return frag
@@ -221,7 +219,6 @@ class AssignmentXBlock(XBlock):
         filename, file_extension = os.path.splitext(file.filename  )
         unique_file_key = filename + '_' + str(datetime.now().timestamp()) + file_extension
 
-        print(unique_file_key)
         return f"{prefix}/{unique_file_key}"
     
     def _upload_file(self, file):
@@ -246,8 +243,6 @@ class AssignmentXBlock(XBlock):
         status = data.get('status')
         context = self._get_general_context()
         if data.get('submission') is not None: 
-            data['submission']['date'] = datetime.fromtimestamp(data['submission']['date'])
-
             if data['submission']['result'] == 'did_not_pass':
                 need_to_fix = 0
                 for group in data['submission']['responses']:
@@ -284,6 +279,7 @@ class AssignmentXBlock(XBlock):
             "allowed_file_types": self.allowed_file_types,
             "score": self.total_score,
             "file_input_accepts": file_input_accepts,
+            "html_content": self.html_content,
         }
 
         return context
@@ -309,14 +305,10 @@ class AssignmentXBlock(XBlock):
 
     @XBlock.json_handler
     def update_settings(self, data, context=None, request=None):
-        max_file_size = data.get('max_file_size')
-        allowed_file_types = data.get('allowed_file_types')
-        score = data.get('score')
-
-        self.max_file_size = max_file_size
-        self.allowed_file_types = allowed_file_types
-        self.total_score = score
-
+        self.max_file_size = data.get('max_file_size')
+        self.html_content = data.get('html_content')
+        self.allowed_file_types =  data.get('allowed_file_types')
+        self.total_score = data.get('score')
         return {
             "message": "settings saved"
         }

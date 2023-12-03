@@ -1,16 +1,7 @@
+
 const LMS_HEADER_HEIGHT = 100; // để khi scroll thì cộng vào
 const UNIT_HEIGHT_TRANSITION = 0.2; // để transition đồng bộ khi collapse - expand criteria feedback và submission history
 
-function wait(sec) {
-    return new Promise((res, _) => {
-        setTimeout(() => {
-            res(true);
-        }, sec)
-    })
-}
-
-
-// main js xblock
 function AssignmentXBlock(runtime, element) {
 
     class SubmissionHistorySelect {
@@ -27,8 +18,8 @@ function AssignmentXBlock(runtime, element) {
             } = obj || {};
 
             this.MAIN_ID = MAIN_ID || "submission_history";
-            this.PLACEHOLDER = PLACEHOLDER || "Chọn dự án";
-            this.NO_OPTION_FOUND = NO_OPTION_FOUND || "No Option Found";
+            this.PLACEHOLDER = PLACEHOLDER || gettext('Select project');
+            this.NO_OPTION_FOUND = NO_OPTION_FOUND || gettext('No project found');
             this.SVG =
                 SVG ||
                 `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -97,22 +88,29 @@ function AssignmentXBlock(runtime, element) {
                 const optionEle = this.createOptionEle(option);
                 optionsContainer.appendChild(optionEle);
             });
-
             this.getEleById(this.SELECT_ID).appendChild(optionsContainer);
+            resize_unit(60, ".2s")
+
         }
 
         createOptionEle(val) {
             const li = this.createEle("li");
-            li.innerText = val.date;
             li.classList.add(this.OPTION_CLASS);
-            li.onclick = () => {
-                this.chosenValue = val;
-                this.removeOptions();
-                this.OPTION_HANDLER(val);
-            };
 
-            if (this.chosenValue == val) {
-                li.classList.add('is-current-submission')
+            if (typeof val === 'string') {
+                // no option found
+                li.innerText = val
+            } else {
+                li.innerText = val.date;
+                li.onclick = () => {
+                    this.chosenValue = val;
+                    this.removeOptions();
+                    this.OPTION_HANDLER(val);
+                };
+
+                if (this.chosenValue == val) {
+                    li.classList.add('is-current-submission')
+                }
             }
 
             return li;
@@ -121,8 +119,13 @@ function AssignmentXBlock(runtime, element) {
         removeOptions() {
             const optionsEle = this.getEleById(this.OPTIONS_ID);
             if (optionsEle) {
+                const containerHeight = document.getElementById(this.MAIN_ID).offsetHeight;
+                document.getElementById(this.MAIN_ID).style.height = `${containerHeight - optionsEle.offsetHeight}px`
                 optionsEle.remove();
+                resize_unit(0, ".2s")
+
             }
+
         }
 
         // helpers
@@ -139,6 +142,7 @@ function AssignmentXBlock(runtime, element) {
             this.getEleById(this.INPUT_ID).value = this.chosenValue.date;
             this.getEleById(this.SELECT_ID).classList.remove("is--focus");
             this.removeOptions();
+
         }
 
         onInputChangeHandler(val) {
@@ -301,29 +305,24 @@ function AssignmentXBlock(runtime, element) {
             init_submit_handlers();
         } else if (status === "unable_to_review") {
             init_submit_handlers();
-            init_resubmit_handlers();
-
             init_submission_history(submissions, data.submission);
+            _render_submission_date(data.submission.date * 1000)
         } else if (status === "not_graded") {
             init_submission_history(submissions, data.submission);
-
+            _render_submission_date(data.submission.date * 1000)
         } else if (status === "passed") {
+
             init_criteria_handlers();
             init_submission_history(submissions, data.submission);
-
-            // submission history
+            _render_submission_date(data.submission.date * 1000)
         } else if (status === "did_not_pass") {
             init_submit_handlers();
-            init_resubmit_handlers();
             init_criteria_handlers();
             init_submission_history(submissions, data.submission);
-
+            _render_submission_date(data.submission.date * 1000)
         } else {
             // internal_server_error
             // do nothing
-            $('#scrollToTop', element).click(() => {
-                scroll_to_top();
-            })
         }
 
         _toggle_loading_modal(false);
@@ -358,7 +357,6 @@ function AssignmentXBlock(runtime, element) {
             const file = files[0];
 
             if (!file) {
-
                 _toggle_display("#file-upload-preview", false)
                 _toggle_display("label[for=file-input]", true)
                 $("#chosen-file-name", element).text("");
@@ -492,11 +490,11 @@ function AssignmentXBlock(runtime, element) {
         const ext = file.name.split(".").pop().toLowerCase();
 
         if (!ALLOWED_FILE_TYPES.includes(ext)) {
-            return `Only the following file types are allowed: ${basic_data.allowed_file_types}`;
+            return `${gettext('Only the following file types are allowed:')} ${basic_data.allowed_file_types}`;
 
         } else if (file.size > MAX_FILE_SIZE * 1024 * 1024) {
 
-            return `File is too large. Only allowed maximum ${MAX_FILE_SIZE}mb`;
+            return `${gettext('File is too large. Only allowed maximum')} ${MAX_FILE_SIZE}mb`;
         }
 
         return "";
@@ -604,7 +602,6 @@ function AssignmentXBlock(runtime, element) {
                     } else {
                         rej("Internal Server Error");
                     }
-
                 },
             });
         });
@@ -639,19 +636,6 @@ function AssignmentXBlock(runtime, element) {
             $("#submit-error-message", element).removeClass("d-none");
             $("#submit-error-message", element).text(message);
         }
-    }
-
-    function init_resubmit_handlers() {
-        $('#resubmit-btn', element).click(() => {
-            $('#resubmit-modal', element).removeClass('d-none');
-            $('#main-content', element).addClass('d-none');
-        });
-
-        $('#goback-btn', element).click(() => {
-            $('#resubmit-modal', element).addClass('d-none');
-            $('#main-content', element).removeClass('d-none');
-        });
-
     }
 
     function init_criteria_handlers() {
@@ -725,6 +709,11 @@ function AssignmentXBlock(runtime, element) {
 
     function _post_message(data) {
         window.parent.postMessage({ type: 'learningprojectxblock', ...data }, "*")
+    }
+
+    function _render_submission_date(timestamp) {
+        $('#submission-status-date span', element).text(new Date(timestamp).toLocaleString())
+
     }
 
 }

@@ -1,6 +1,10 @@
 {% load i18n %}
 
+{% if html_content is not None and html_content != '' %}
+<div class='lpx-container'>{{html_content|safe}}</div>
+{% else %}
 <div class="lpx-container">
+
     <h3 class="lpx-heading-1">{% trans 'Instructions for submission' %}</h3>
 
     <p>{% trans "For this part of the project, you will choose a brand or product within the travel industry (airline, hospitality, etc...), and you'll create an SEM campaign for it." %}</p>
@@ -51,3 +55,4 @@
         </li> 
     </ul>
 </div>
+{% endif %}

@@ -556,12 +556,13 @@ li.criterion:first-of-type .criterion-header {
 /* submission_history  */
 /* max heigh của options ~ 9rem => cho padding bottom 10rem để chừa chỗ trống cho options show  */
 #submission-history-container {
-  padding: 0 0 10rem 0;
+  padding: 0 0 2rem 0;
 }
 
 #submission_history {
   width: 21.875rem;
   position: relative;
+  transition: .2s;
 }
 
 #submission_history-select {
@@ -569,6 +570,7 @@ li.criterion:first-of-type .criterion-header {
   border-radius: var(--border-radius);
   border: solid 1px var(--color-stroke);
   padding: 1px;
+  position: relative;
 
 }
 
