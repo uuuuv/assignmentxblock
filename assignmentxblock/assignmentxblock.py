@@ -119,7 +119,7 @@ class AssignmentXBlock(XBlock):
         template = Template(template_str)
         rendered_html = template.render(Context(context))
         frag = Fragment(rendered_html)
-        frag.add_css(self.resource_string("static/css/studio_view.css"))
+        frag.add_css(self.resource_string("static/css/assignmentxblock.css"))
         frag.add_javascript(self.resource_string("static/js/studio_view.js"))
         frag.initialize_js('AssignmentXBlock')
         return frag

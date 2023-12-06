@@ -6,10 +6,8 @@ assignmentxblock/assignmentxblock.py
 assignmentxblock/config.py
 assignmentxblock/fileupload.py
 assignmentxblock/uploaders.py
-assignmentxblock/x.py
 assignmentxblock/static/README.txt
 assignmentxblock/static/css/assignmentxblock.css
-assignmentxblock/static/css/studio_view.css
 assignmentxblock/static/js/assignmentxblock.js
 assignmentxblock/static/js/studio_view.js
 assignmentxblock/templates/author_view.html

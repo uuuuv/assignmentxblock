@@ -257,10 +257,20 @@ function AssignmentXBlock(runtime, element) {
         const url = data.portalInitialUrl;
 
         return new Promise((res, rej) => {
+            // uuuuv Need to change here for prod
+            // $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+            //     delete options.headers['X-Csrftoken'];
+            //     delete options.headers['x-csrftoken'];
+            //     delete options.headers['X-CSRFToken'];
+            // });
+
             $.ajax({
                 url: url,
                 type: "POST",
                 data: JSON.stringify(requestData),
+                // xhrFields: {
+                //     withCredentials: true
+                // },
                 headers,
                 success: function (response) {
                     res(response.data)
@@ -268,7 +278,13 @@ function AssignmentXBlock(runtime, element) {
                 error: function (xhr, status, error) {
                     console.error(xhr, status, error);
                     if (xhr.responseJSON) {
-                        rej(xhr.responseJSON.message);
+                        if (typeof xhr.responseJSON.message === 'string') {
+                            rej(xhr.responseJSON.message);
+                        }
+
+                        if (typeof xhr.responseJSON.error === 'string') {
+                            rej(xhr.responseJSON.error);
+                        }
                     }
                     rej("Internal Server Error");
                 },
@@ -591,6 +607,9 @@ function AssignmentXBlock(runtime, element) {
                 type: "POST",
                 data: JSON.stringify(requestData),
                 contentType: "application/json",
+                // xhrFields: {
+                //     withCredentials: true
+                // },
                 success: function (response) {
                     res(response);
                 },

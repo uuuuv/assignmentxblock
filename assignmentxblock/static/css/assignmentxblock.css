@@ -44,24 +44,31 @@
   }
 }
 
-p,
-span,
-a,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-label {
+#lpx p,
+#lpx span,
+#lpx strong,
+#lpx a,
+#lpx h1,
+#lpx h2,
+#lpx h3,
+#lpx h4,
+#lpx h5,
+#lpx h6,
+#lpx label {
   font-family: 'Roboto', sans-serif;
   line-height: 1.5;
   color: var(--color-text-default);
 }
 
-strong {
+#lpx strong {
   font-weight: 500;
 }
+
+#lpx a {
+  font-weight: 500;
+  color: var(--color-primary);
+}
+
 
 /******************************************************************/
 /**************************** COMMON  *****************************/
@@ -85,18 +92,19 @@ strong {
 
 
 /**************************** button  *****************************/
-.lpx-btn {
+#lpx .lpx-btn {
   padding: 0.625rem 1.25rem !important;
   font-size: 1rem !important;
   font-weight: 500 !important;
   line-height: 1.5rem !important;
-  display: inline-block !important;
+  display: inline-block;
   border-radius: var(--border-radius) !important;
   cursor: pointer !important;
   background-image: none !important;
   outline: none !important;
   box-shadow: none !important;
   text-decoration: none !important;
+  font-family: 'Roboto', sans-serif;
 }
 
 .lpx-btn:hover {
@@ -263,7 +271,7 @@ strong {
 
 
 /**************************** util classes *****************************/
-.d-none {
+#lpx .d-none {
   display: none !important;
 }
 
@@ -279,8 +287,6 @@ strong {
   border-radius: var(--border-radius);
   margin-bottom: 0.5rem;
 }
-
-
 
 #file-upload-preview>div {
   display: flex;
@@ -380,6 +386,10 @@ strong {
   margin: 0;
 }
 
+#lpx #submit-error-message {
+  color: var(--color-accent-critical);
+}
+
 /**************************** submission_status *****************************/
 #lpx #submission-status-date {
   margin-bottom: .5rem;
@@ -387,7 +397,6 @@ strong {
 
 #submission-status-bar {
   padding: 0.75rem;
-  height: 3rem;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -677,7 +686,7 @@ li.criterion:first-of-type .criterion-header {
 /* error message  */
 .error-message {
   padding: 20px;
-  color: white;
+  color: white !important;
   background: #bb1212;
   font-size: 16px;
 }
@@ -714,4 +723,39 @@ li.criterion:first-of-type .criterion-header {
   100% {
     transform: rotate(360deg);
   }
+}
+
+/* STUDIO  */
+.lpx-form-group {
+  padding: 1em;
+}
+
+.lpx-form-group label {
+  display: block;
+  font-weight: 500;
+  padding-bottom: 0.5em;
+  font-family: inherit;
+  font-size: 1em;
+}
+
+.lpx-form-group:not(.lpx-html-editor) input {
+  padding: .5em;
+  width: 100%;
+  border-radius: 6px;
+  display: block;
+  border: 1px solid #e5e5e5;
+  outline: none;
+}
+
+.lpx_editor_buttons.modal-actions {
+  background: rgb(229, 229, 229);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+}
+
+.modal-content.lpx-modal-content {
+  position: static !important;
 }
