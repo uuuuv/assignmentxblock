@@ -20,3 +20,7 @@ msgstr "Chọn dự án"
 # static/js/assignmentxblock.js
 msgid "No project found"
 msgstr "Không tìm thấy dự án nào"
+
+# static/js/assignmentxblock.js
+msgid "Submission date: "
+msgstr "Ngày nộp: "

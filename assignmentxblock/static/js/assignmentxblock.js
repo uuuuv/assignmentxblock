@@ -74,8 +74,7 @@ function AssignmentXBlock(runtime, element) {
         renderInput() {
             const input = this.createEle("input");
             input.id = this.INPUT_ID;
-            input.placeholder = this.PLACEHOLDER
-            // input.placeholder = gettext('Submission date: ') + this.chosenValue.date;
+            input.placeholder = gettext('Submission date: ') + this.chosenValue.date;
             input.value = this.chosenValue.date;
 
             input.oninput = (e) => this.onInputChangeHandler(e.target.value.trim());
@@ -696,9 +695,17 @@ function AssignmentXBlock(runtime, element) {
     function init_submission_history(submissions, current_submission) {
         if (submissions.length < 2) return;
 
-        const transformed_submissions = submissions.map(item => ({ date: new Date(item.create_date * 1000).toLocaleString(), id: item.id }));
+        const options = {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+        };
+
+
+        const transformed_submissions = submissions.map(item => ({ date: new Date(item.create_date * 1000).toLocaleString(undefined, options), id: item.id }));
 
         transformed_submissions.reverse()
+
 
         const history_select = new SubmissionHistorySelect({
             OPTIONS: transformed_submissions,
