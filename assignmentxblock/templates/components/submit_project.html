@@ -1,16 +1,16 @@
 {% load i18n %}
 
 <div class="lpx-container">
-    <h3 class="lpx-heading-1">
+    <h2 class="lpx-heading-1">
         {% if submission %}
             {% trans 'Resubmit project' %}
         {% else %}
             {% trans 'Submit project' %}
         {% endif %}
-    </h3>
+    </h2>
     
     <div class='lpx-mb-2'>
-        <h5 class='lpx-heading-3'>{% trans 'Upload zip file' %}</h4>
+        <h4 class='lpx-heading-3'>{% trans 'Upload zip file' %}</h4>
     
         <p>{% trans 'Compress your files into a single zip file, up to 500 MB.' %}</p>
     
@@ -24,15 +24,23 @@
         />
     
        <div id="file-upload-preview" class='d-none'>
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <path d="M9 17.75h6c.213 0 .39-.072.534-.216A.727.727 0 0 0 15.75 17a.725.725 0 0 0-.216-.535.726.726 0 0 0-.534-.215H9a.725.725 0 0 0-.534.216.726.726 0 0 0-.216.534c0 .213.072.391.216.535A.726.726 0 0 0 9 17.75zm0-4h6c.213 0 .39-.072.534-.216A.727.727 0 0 0 15.75 13a.725.725 0 0 0-.216-.535.726.726 0 0 0-.534-.215H9a.725.725 0 0 0-.534.216.726.726 0 0 0-.216.534c0 .213.072.391.216.535A.726.726 0 0 0 9 13.75zM6.308 21.5c-.505 0-.933-.175-1.283-.525a1.745 1.745 0 0 1-.525-1.283V4.308c0-.505.175-.933.525-1.283.35-.35.778-.525 1.283-.525h7.194a1.802 1.802 0 0 1 1.275.527l4.196 4.196a1.8 1.8 0 0 1 .527 1.275v11.194c0 .505-.175.933-.525 1.283-.35.35-.778.525-1.283.525H6.308zM13.5 7.6c0 .255.086.469.259.641a.871.871 0 0 0 .641.259H18L13.5 4v3.6z" fill="#576F8A"/>
-                </svg>
-    
-                <span id="chosen-file-name"></span>
+            <div id="file-upload-preview-inner">
+                <div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M9 17.75h6c.213 0 .39-.072.534-.216A.727.727 0 0 0 15.75 17a.725.725 0 0 0-.216-.535.726.726 0 0 0-.534-.215H9a.725.725 0 0 0-.534.216.726.726 0 0 0-.216.534c0 .213.072.391.216.535A.726.726 0 0 0 9 17.75zm0-4h6c.213 0 .39-.072.534-.216A.727.727 0 0 0 15.75 13a.725.725 0 0 0-.216-.535.726.726 0 0 0-.534-.215H9a.725.725 0 0 0-.534.216.726.726 0 0 0-.216.534c0 .213.072.391.216.535A.726.726 0 0 0 9 13.75zM6.308 21.5c-.505 0-.933-.175-1.283-.525a1.745 1.745 0 0 1-.525-1.283V4.308c0-.505.175-.933.525-1.283.35-.35.778-.525 1.283-.525h7.194a1.802 1.802 0 0 1 1.275.527l4.196 4.196a1.8 1.8 0 0 1 .527 1.275v11.194c0 .505-.175.933-.525 1.283-.35.35-.778.525-1.283.525H6.308zM13.5 7.6c0 .255.086.469.259.641a.871.871 0 0 0 .641.259H18L13.5 4v3.6z" fill="#576F8A"/>
+                    </svg>
+
+                    <span id="chosen-file-name"></span>
+                </div>
+
+                <span id="remove-file-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.6" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </span>
             </div>
-    
-            <span id="remove-file-btn">{% trans 'Delete' %}</span>
+
+            <p id="uploading-file" class='d-none'>{% trans "Uploading file..." %}</p>
        </div>
     
        <p id='file-error-message' class='d-none'>
@@ -44,7 +52,7 @@
     </div>
 
    <div id='submission-note-container' class='d-none lpx-mb-2'>
-        <h5 class='lpx-heading-3'>{% trans 'Submission notes (not required)' %}</h5>
+        <h4 class='lpx-heading-3'>{% trans 'Submission notes (not required)' %}</h4>
 
         <p>{% trans 'Is there any part of the submission you want your mentor to pay special attention to?' %}</p>
 
@@ -52,7 +60,7 @@
    </div>
 
    <div id="terms" class='d-none lpx-mb-2'>
-        <h5 class='lpx-heading-3'>{% trans 'Funix Honor Code' %}</h5>
+        <h4 class='lpx-heading-3'>{% trans 'Funix Honor Code' %}</h4>
 
         <p>{% trans 'You need to agree to the following before submitting your assignment' %}</p>
 
@@ -121,7 +129,7 @@
 
 <div id="confirm-submit-modal" class="backdrop d-none">
     <div id="confirm-submit-prompt">
-        <p class='lpx-heading-1 lpx-mb-1'>{% trans 'Confirmation of submission' %}</p>
+        <h2 class='lpx-heading-1 lpx-mb-1'>{% trans 'Confirmation of submission' %}</h2>
         <p id="confirm-submit-text">{% trans 'You confirm that you will submit this project. Once submitted, you will not be able to edit or submit new work until you receive feedback.' %}</p>
         <div id="confirm-submit-btns">
             <button id="cancel-submit-btn" class='lpx-btn lpx-btn-sm lpx-btn-secondary'>{% trans 'Cancel' %}</button>

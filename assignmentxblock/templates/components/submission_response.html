@@ -1,7 +1,7 @@
 {% load i18n %}
 
-<div class='lpx-container'>
-  <h3 class="lpx-heading-1">{% trans "Feedback Details" %}</h3>
+<div id="submission-results" class='lpx-container d-none'>
+  <h2 class="lpx-heading-1">{% trans "Feedback Details" %}</h2>
 
   {% if submission.result == 'passed' %}
     <div id='submission-response-tabs'>
@@ -37,7 +37,7 @@
       {% for group in submission.responses %}
     
       <li class="criteria-group">
-        <h3 class="lpx-heading-3 ">{{ group.group_name }}</h3>
+        <h4 class="lpx-heading-3 ">{{ group.group_name }}</h4>
     
         <ul class="criteria-responses">
           {% for criterion in group.criteria %}

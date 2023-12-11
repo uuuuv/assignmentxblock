@@ -101,6 +101,11 @@ msgstr "Dự án đã đạt"
 msgid "Unable To Review"
 msgstr "Bài của bạn chưa sẵn sàng để đánh giá"
 
+#: templates/components/submission_status.html
+msgid "See results"
+msgstr "Xem kết quả"
+
+
 #: templates/components/submit_project.html
 msgid "Submit project"
 msgstr "Nộp dự án"
@@ -169,6 +174,10 @@ msgstr "Xác nhận nộp bài"
 msgid "You confirm that you will submit this project. Once submitted, you will not be able to edit or submit new work until you receive feedback."
 msgstr "Bạn xác nhận sẽ nộp dự án này. Sau khi gửi bạn sẽ không thể chỉnh sửa hoặc nộp bài mới cho tới khi có phản hồi."
 
+#: templates/components/submit_project.html
+msgid "Cancel submission"
+msgstr "Hủy bài nộp"
+
 #: templates/components/submission_response.html
 msgid "Feedback Details"
 msgstr "Nhận xét chi tiết"
@@ -177,10 +186,26 @@ msgstr "Nhận xét chi tiết"
 msgid "Reviewer Note"
 msgstr "Nhận xét của mentor"
 
-#: 
+#: templates/components/submit_project.html
 msgid "Must be .zip file."
 msgstr "Phải là file .zip"
 
-#: 
+#: templates/components/submit_project.html
 msgid "File is too large."
 msgstr "File quá lớn."
+
+#: templates/components/submit_project.html
+msgid "Uploading file..."
+msgstr "Đang tải file lên..."
+
+#: assignmentxblock.py
+msgid "File name must not contain spaces."
+msgstr "Tên tệp không được chứa khoảng trắng."
+
+#: assignmentxblock.py
+msgid "Only allow the following file types:"
+msgstr "Chỉ cho phép các loại tệp sau:"
+
+#: assignmentxblock.py
+msgid "File is too large. The maximum allowed size is"
+msgstr "Tập tin quá lớn. Kích thước tối đa cho phép là"

@@ -30,6 +30,7 @@ function AssignmentXBlock(runtime, element) {
             this.SELECT_ID = `${this.MAIN_ID}-select`;
             this.SVG_CONTAINER_ID = `${this.MAIN_ID}-svg-container`;
             this.OPTIONS_ID = "submission_history-options";
+            this.OPTIONS_CONTAINER_ID = "history-options-container";
             this.OPTION_CLASS = "submission_history-option";
             this.chosenValue = chosenValue || "";
             this.OPTIONS = OPTIONS || [];
@@ -73,7 +74,8 @@ function AssignmentXBlock(runtime, element) {
         renderInput() {
             const input = this.createEle("input");
             input.id = this.INPUT_ID;
-            input.placeholder = this.PLACEHOLDER;
+            input.placeholder = this.PLACEHOLDER
+            // input.placeholder = gettext('Submission date: ') + this.chosenValue.date;
             input.value = this.chosenValue.date;
 
             input.oninput = (e) => this.onInputChangeHandler(e.target.value.trim());
@@ -82,14 +84,23 @@ function AssignmentXBlock(runtime, element) {
         }
 
         renderOptions(options) {
-            const optionsContainer = this.createEle("ul");
-            optionsContainer.id = this.OPTIONS_ID;
+            const ul = this.createEle("ul");
+            ul.id = this.OPTIONS_ID;
             options.forEach((option) => {
                 const optionEle = this.createOptionEle(option);
-                optionsContainer.appendChild(optionEle);
+                ul.appendChild(optionEle);
             });
-            this.getEleById(this.SELECT_ID).appendChild(optionsContainer);
-            resize_unit(60, ".2s")
+
+            const container = document.createElement('div')
+            container.id = this.OPTIONS_CONTAINER_ID
+            if (options.length > 3) {
+                container.classList.add('overflow')
+            }
+            container.appendChild(ul);
+
+            this.getEleById(this.MAIN_ID).appendChild(container);
+            // this.getEleById(this.MAIN_ID).appendChild(ul);
+            // resize_unit(60, ".2s")
 
         }
 
@@ -117,13 +128,12 @@ function AssignmentXBlock(runtime, element) {
         }
 
         removeOptions() {
-            const optionsEle = this.getEleById(this.OPTIONS_ID);
-            if (optionsEle) {
+            const optionsContainer = this.getEleById(this.OPTIONS_CONTAINER_ID);
+            if (optionsContainer) {
                 const containerHeight = document.getElementById(this.MAIN_ID).offsetHeight;
-                document.getElementById(this.MAIN_ID).style.height = `${containerHeight - optionsEle.offsetHeight}px`
-                optionsEle.remove();
-                resize_unit(0, ".2s")
-
+                // document.getElementById(this.MAIN_ID).style.height = `${containerHeight - optionsContainer.offsetHeight}px`
+                optionsContainer.remove();
+                // resize_unit(0, ".2s")
             }
 
         }
@@ -323,19 +333,22 @@ function AssignmentXBlock(runtime, element) {
             init_submit_handlers();
             init_submission_history(submissions, data.submission);
             _render_submission_date(data.submission.date * 1000)
+            _init_show_results_btn_handler()
         } else if (status === "not_graded") {
             init_submission_history(submissions, data.submission);
             _render_submission_date(data.submission.date * 1000)
+            _init_show_results_btn_handler()
         } else if (status === "passed") {
-
             init_criteria_handlers();
             init_submission_history(submissions, data.submission);
             _render_submission_date(data.submission.date * 1000)
+            _init_show_results_btn_handler()
         } else if (status === "did_not_pass") {
             init_submit_handlers();
             init_criteria_handlers();
             init_submission_history(submissions, data.submission);
             _render_submission_date(data.submission.date * 1000)
+            _init_show_results_btn_handler()
         } else {
             // internal_server_error
             // do nothing
@@ -419,6 +432,7 @@ function AssignmentXBlock(runtime, element) {
 
             // clear the file error message if there is one
             _toggle_file_error_msg('');
+            _toggle_submit_error('')
 
             // resize
             resize_unit();
@@ -536,7 +550,7 @@ function AssignmentXBlock(runtime, element) {
 
     function submit() {
 
-        _toggle_loading_modal(true);
+        // _toggle_loading_modal(true);
         $("#confirm-submit-modal", element).addClass("d-none");
         _toggle_submit_error("")
         _upload_file()
@@ -552,7 +566,7 @@ function AssignmentXBlock(runtime, element) {
                 });
             })
             .catch(error => {
-                _toggle_loading_modal(false);
+                // _toggle_loading_modal(false);
                 _toggle_submit_error(error);
             });
     }
@@ -561,7 +575,7 @@ function AssignmentXBlock(runtime, element) {
         const file = Array.from($("#file-input", element).prop("files"))[0];
         const formData = new FormData();
         formData.append('file', file);
-
+        _togger_uploading_file(true)
         return new Promise((res, rej) => {
             $.ajax({
                 url: runtime.handlerUrl(element, "learning_project_upload_file"),
@@ -570,10 +584,10 @@ function AssignmentXBlock(runtime, element) {
                 processData: false,
                 contentType: false,
                 success: function (response) {
-                    res(response.download_url);
+                    res(response);
+                    _togger_uploading_file(false)
                 }, error: function (xhr, status, error) {
                     console.error(xhr, status, error);
-                    var httpStatusCode = xhr.status;
 
                     if (xhr.responseJSON) {
                         if (xhr.status === 413 && xhr?.responseJSON?.success) {
@@ -582,6 +596,7 @@ function AssignmentXBlock(runtime, element) {
                         rej(xhr.responseJSON.message);
                     }
                     rej("Internal Server Error");
+                    _togger_uploading_file(false)
                 }
             })
         })
@@ -681,16 +696,16 @@ function AssignmentXBlock(runtime, element) {
     function init_submission_history(submissions, current_submission) {
         if (submissions.length < 2) return;
 
-
         const transformed_submissions = submissions.map(item => ({ date: new Date(item.create_date * 1000).toLocaleString(), id: item.id }));
 
+        transformed_submissions.reverse()
 
         const history_select = new SubmissionHistorySelect({
             OPTIONS: transformed_submissions,
             OPTION_HANDLER: function (item) {
                 _toggle_loading_modal(true);
                 init(item.id).catch(console.error).finally(() => {
-                    scroll_to_top();
+                    scroll_to_top(-9000);
                     _toggle_loading_modal(false);
                     resize_unit();
                 });
@@ -732,7 +747,21 @@ function AssignmentXBlock(runtime, element) {
 
     function _render_submission_date(timestamp) {
         $('#submission-status-date span', element).text(new Date(timestamp).toLocaleString())
+    }
 
+    function _init_show_results_btn_handler() {
+        $('#see-results-btn', element).click(function (event) {
+            $('#submission-results', element).removeClass('d-none')
+            $(this).addClass('d-none')
+        })
+    }
+
+    function _togger_uploading_file(should_show) {
+        if (should_show) {
+            $('#uploading-file', element).removeClass('d-none')
+        } else {
+            $('#uploading-file', element).addClass('d-none')
+        }
     }
 
 }

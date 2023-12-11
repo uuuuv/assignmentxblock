@@ -3,11 +3,12 @@
 <div class='lpx-container'>
   <div id="submission-status">
     
-    <h3 class="lpx-heading-1">{% trans "Submission Results" %}</h3>
+    <h2 class="lpx-heading-1">{% trans "Submission Results" %}</h2>
     <p id="submission-status-date">{% trans 'Submission date: ' %}<span></span></p>
   
     <div id="submission-status-bar" class='{{ submission.result }}'>
-      {% if submission.result == 'unable_to_review' or submission.result == 'did_not_pass' %}
+      <div id="submission-status-bar-title">
+        {% if submission.result == 'unable_to_review' or submission.result == 'did_not_pass' %}
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
           <path d="m12 13.4 2.9 2.9a.948.948 0 0 0 .7.275.948.948 0 0 0 .7-.275.948.948 0 0 0 .275-.7.948.948 0 0 0-.275-.7L13.4 12l2.9-2.9a.948.948 0 0 0 .275-.7.948.948 0 0 0-.275-.7.948.948 0 0 0-.7-.275.948.948 0 0 0-.7.275L12 10.6 9.1 7.7a.948.948 0 0 0-.7-.275.948.948 0 0 0-.7.275.948.948 0 0 0-.275.7c0 .283.092.517.275.7l2.9 2.9-2.9 2.9a.948.948 0 0 0-.275.7c0 .283.092.517.275.7a.948.948 0 0 0 .7.275.948.948 0 0 0 .7-.275l2.9-2.9zm0 8.6a9.738 9.738 0 0 1-3.9-.788 10.099 10.099 0 0 1-3.175-2.137c-.9-.9-1.612-1.958-2.137-3.175A9.738 9.738 0 0 1 2 12c0-1.383.263-2.683.788-3.9a10.099 10.099 0 0 1 2.137-3.175c.9-.9 1.958-1.612 3.175-2.137A9.738 9.738 0 0 1 12 2c1.383 0 2.683.263 3.9.788a10.098 10.098 0 0 1 3.175 2.137c.9.9 1.613 1.958 2.137 3.175A9.738 9.738 0 0 1 22 12a9.738 9.738 0 0 1-.788 3.9 10.098 10.098 0 0 1-2.137 3.175c-.9.9-1.958 1.613-3.175 2.137A9.738 9.738 0 0 1 12 22z" fill="#D82C0D"/>
         </svg>
@@ -21,7 +22,6 @@
         </svg>
       {% endif %}
   
-      <span>
         <strong>
         {% if submission.result == 'passed' %}
           {% trans "Submission Passed" %}
@@ -33,7 +33,13 @@
           {% trans "Submission In Review" %}
         {% endif %}
         </strong>
-      </span>
+      </div>
+
+      {% if submission.result == 'not_graded' %}
+        <strong id="cancel_submission_btn">{% trans "Cancel submission" %}</strong>
+      {% endif %}
+
+      <strong id="see-results-btn" >{% trans "See results" %}</strong>
     </div>
   
   </div>

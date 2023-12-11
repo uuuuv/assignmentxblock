@@ -27,6 +27,8 @@ AWS_S3_REGION_NAME: your_value
 AWS_S3_ACCESS_KEY_ID: your_value
 AWS_S3_SECRET_ACCESS_KEY: your_value
 AWS_S3_BUCKET_NAME: your_value
+LMS_HOST: your_value # without https://
+PORTAL_HOST: your_value
 ```
 
 **tutor plugin**

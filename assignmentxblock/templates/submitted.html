@@ -1,7 +1,7 @@
 {% load i18n %}
 
-{% if submission.result == 'not_graded' or submission is None %}
-{% include "components/instruction.html" %}
+{% if submissions and submissions|length > 1 %}
+    {% include "components/submission_history.html" %}
 {% endif %}
 
 {% if submission %}
@@ -16,7 +16,4 @@
     {% include "components/submit_project.html" %}
 {% endif %}
 
-{% if submissions and submissions|length > 1 %}
-    {% include "components/submission_history.html" %}
-{% endif %}
 

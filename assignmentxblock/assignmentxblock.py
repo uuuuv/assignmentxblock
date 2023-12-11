@@ -3,7 +3,7 @@ from web_fragments.fragment import Fragment
 from xblock.core import XBlock
 from .config import get_config
 import logging
-from xblock.fields import Integer, Scope, String, XMLString
+from xblock.fields import Integer, Scope, String, XMLString, Boolean
 from django.template import Template, Context
 from webob import Response
 from .fileupload import get_uploader
@@ -57,14 +57,39 @@ class AssignmentXBlock(XBlock):
         default=""
     )
 
-    def max_score(self):
-        return self.total_score
 
+
+    submission_note = String(
+        default="",
+        scope=Scope.user_state,
+        help="Submission note"
+    )
+
+    file_url = String(
+        default="",
+        scope=Scope.user_state,
+        help="The latest uploaded file url"
+    )
+
+    file_name = String(
+        default="",
+        scope=Scope.user_state,
+        help="The latest uploaded file name"
+    )
+
+    uploaded_successfully = Boolean(
+        default=False,
+        scope=Scope.user_state,
+        help="The latest uploaded file state"
+    )
 
     display_name = String(
-        default="Assignment XBlock", scope=Scope.settings,
+        default="Learning Project XBlock", scope=Scope.settings,
         help="Display name"
     )
+
+    def max_score(self):
+        return self.total_score
 
     @property
     def has_score(self):
@@ -146,12 +171,26 @@ class AssignmentXBlock(XBlock):
             }
             return response
 
-        download_url = self._upload_file(file)
+        try:
+            self.file_name = ''
+            self.file_url = ''
+            download_url = self._upload_file(file)
+            self.file_name = file.filename
+            self.file_url = download_url
+        except Exception as e:
+            logger.error(str(e))
+            response.status_code = 500
+            response.content_type = "application/json"
+            response.json_body = {
+                "message": self._('Internal Server Error'), 
+            }
+            return response
 
         response.status_code = 200
         response.content_type = "application/json"
         response.json_body = {
-            "download_url": download_url
+            "file_name": self.file_name,
+            "file_url": self.file_url,
         }
 
         return response
@@ -188,10 +227,10 @@ class AssignmentXBlock(XBlock):
 
     def validate_file(self, file):
         if self.max_file_size * 1024 * 1024 < file.file.size: 
-            return f'File is too large. The maximum allowed size is {self.max_file_size}MB.'
+            return f'{self._("File is too large. The maximum allowed size is")} {self.max_file_size}MB.'
 
         if " " in file.filename:
-            return 'File name must not contain spaces.'
+            return self._('File name must not contain spaces.')
 
         file_types = self.allowed_file_types.split(',')
         file_types = list(map(lambda x: x.strip().lower(), file_types))
@@ -200,7 +239,7 @@ class AssignmentXBlock(XBlock):
         ext = file.filename.split('.')[-1:][0].lower()
 
         if ext not in file_types:
-            return f"Only allow the following file types: {', '.join(file_types)}."
+            return f"{self._('Only allow the following file types:')} {', '.join(file_types)}."
 
         return ''
     
@@ -234,6 +273,7 @@ class AssignmentXBlock(XBlock):
         # TODO: check if file already exists
         uploader = get_uploader()
         download_url = uploader.upload(file_key, file.file)
+        self.download_url = download_url
 
         return download_url
     
@@ -264,7 +304,6 @@ class AssignmentXBlock(XBlock):
             "template": rendered_html
         }
 
-
     def _get_general_context(self): 
         # create file_accepts for file input
         file_input_accepts = ', '.join(list(map(lambda ext: f'.{ext}', self.allowed_file_types.split(','))))
@@ -280,6 +319,10 @@ class AssignmentXBlock(XBlock):
             "score": self.total_score,
             "file_input_accepts": file_input_accepts,
             "html_content": self.html_content,
+            "file_name": self.file_name,
+            "file_url": self.file_url,
+            "uploaded_successfully": self.uploaded_successfully,
+            "submission_note": self.submission_note,
         }
 
         return context
@@ -287,7 +330,6 @@ class AssignmentXBlock(XBlock):
     def get_anonymous_user_id(self, username, course_id):
         return self.runtime.service(self, 'user').get_anonymous_user_id(username, course_id)
     
-
     @XBlock.json_handler
     def portal_grade(self, data, context=None, request=None):
         result = data.get('result')
@@ -301,7 +343,6 @@ class AssignmentXBlock(XBlock):
         return {
             "message": "success"
         }
-
 
     @XBlock.json_handler
     def update_settings(self, data, context=None, request=None):
