@@ -102,9 +102,20 @@ msgid "Unable To Review"
 msgstr "Bài của bạn chưa sẵn sàng để đánh giá"
 
 #: templates/components/submission_status.html
+msgid "You have not submitted your assignment yet"
+msgstr "Bạn chưa nộp bài"
+
+#: templates/components/submission_status.html
 msgid "See results"
 msgstr "Xem kết quả"
 
+#: templates/components/submission_status.html
+msgid "You have successfully canceled"
+msgstr "Bạn đã hủy thành công"
+
+#: templates/components/submission_status.html
+msgid "You submitted your assignment successfully"
+msgstr "Bạn nộp bài thành công"
 
 #: templates/components/submit_project.html
 msgid "Submit project"

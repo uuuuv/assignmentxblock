@@ -17,6 +17,7 @@ function AssignmentXBlock(runtime, element) {
             const max_file_size = $('#lpx-studio input[name=max-file-size]', element).val();
             const allowed_file_types = $('#lpx-studio input[name=allowed-file-types]', element).val();
             const score = $('#lpx-studio input[name=score]', element).val();
+            const is_result_unit = $('#lpx-studio input[name=is-result-unit]', element).prop('checked')
 
             if (!max_file_size || !allowed_file_types || !score) {
                 alert("Missing input value")
@@ -24,6 +25,7 @@ function AssignmentXBlock(runtime, element) {
             }
 
             const data = {
+                is_result_unit,
                 max_file_size,
                 allowed_file_types,
                 score,

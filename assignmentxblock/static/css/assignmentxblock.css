@@ -84,20 +84,20 @@
 }
 
 .lpx-mb-1 {
-  margin-bottom: .5rem;
+  margin-bottom: .5em;
 }
 
 .lpx-mb-2 {
-  margin-bottom: 1rem;
+  margin-bottom: 1em;
 }
 
 
 /**************************** button  *****************************/
 #lpx .lpx-btn {
-  padding: 0.625rem 1.25rem !important;
-  font-size: 1rem !important;
+  padding: 0.625em 1.25em !important;
+  font-size: 1em !important;
   font-weight: 500 !important;
-  line-height: 1.5rem !important;
+  line-height: 1.5 !important;
   display: inline-block;
   border-radius: 4px !important;
   cursor: pointer !important;
@@ -159,81 +159,81 @@
 
 /* size  */
 #lpx .lpx-btn.lpx-btn-xl {
-  padding: 0.875rem 1.5rem !important;
-  font-size: 1rem;
+  padding: 0.875em 1.5em !important;
+  font-size: 1em;
 }
 
 #lpx .lpx-btn.lpx-btn-lg {
-  padding: 0.75rem 1.25rem !important;
-  font-size: 1rem;
+  padding: 0.75em 1.25em !important;
+  font-size: 1em;
 }
 
 /* default size */
 #lpx .lpx-btn.lpx-btn-md {
-  padding: 0.625rem 1.25rem !important;
-  font-size: 1rem;
+  padding: 0.625em 1.25em !important;
+  font-size: 1em;
 }
 
 #lpx .lpx-btn.lpx-btn-sm {
-  padding: 0.5rem 0.75rem !important;
-  font-size: 0.875rem;
+  padding: 0.5em 0.75em !important;
+  font-size: 0.875em;
 }
 
 #lpx .lpx-btn.lpx-btn-xs {
-  padding: 0.5rem 0.75rem !important;
-  font-size: 0.75rem;
+  padding: 0.5em 0.75em !important;
+  font-size: 0.75em;
 }
 
 /**************************** title and header *****************************/
 #lpx .lpx-title {
-  font-size: 2rem;
+  font-size: 2em;
   font-weight: 500;
   font-family: 'Roboto Serif', serif;
 }
 
 #lpx .lpx-heading-1,
 #lpx h2 {
-  font-size: 1.5rem;
+  font-size: 1.5em;
   font-weight: 500;
 }
 
 #lpx .lpx-heading-2,
 #lpx h3 {
-  font-size: 1.2rem;
+  font-size: 1.2em;
   font-weight: 500;
 }
 
 #lpx .lpx-heading-3,
 #lpx h4 {
-  font-size: 1.125rem;
+  font-size: 1.125em;
   font-weight: 500;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.5em;
 }
 
 /* is also the default p tag */
 #lpx .lpx-paragraph-1,
 #lpx p {
-  font-size: 1rem;
-  margin: 0 0 .5rem 0;
+  font-size: 1em;
+  margin: 0 0 .5em 0;
 }
 
 #lpx .lpx-paragraph-2 {
-  font-size: 0.875rem;
+  font-size: 0.875em;
 }
 
 #lpx .lpx-paragraph-3 {
-  font-size: 0.75rem;
+  font-size: 0.75em;
 }
 
 #lpx .lpx-tag {
-  font-size: 0.6875rem;
+  font-size: 0.6875em;
   font-weight: normal;
 }
 
 #lpx .lpx-link,
 #lpx a {
   text-decoration: underline;
-  font-size: 1rem;
+  font-size: 1em;
   font-weight: 500;
   color: var(--color-primary);
   cursor: pointer;
@@ -241,23 +241,23 @@
 
 /**************************** container *****************************/
 .lpx-container {
-  padding: 0 0 2rem 0;
+  padding: 0 0 2em 0;
 }
 
 .lpx-container .lpx-heading-1,
 .lpx-container>p {
-  margin-bottom: .5rem;
+  margin-bottom: .5em;
 }
 
 /**************************** list *****************************/
 #lpx ul {
-  padding: 0 0 0 .5rem;
-  margin: 0 0 0 1.5rem;
+  padding: 0 0 0 .5em;
+  margin: 0 0 0 1.5em;
 }
 
 #lpx ul>li,
 #lpx ul>li {
-  margin-bottom: 0.375rem;
+  margin-bottom: 0.375em;
 }
 
 #lpx ul>li:last-of-type,
@@ -266,7 +266,7 @@
 }
 
 #lpx ul>li>ul>li:first-of-type {
-  margin-top: 0.375rem;
+  margin-top: 0.375em;
 }
 
 #lpx ul {
@@ -289,66 +289,66 @@
 /**************************** submit_project *****************************/
 #file-upload-preview {
   background: #f6f6f7;
-  padding: .75rem;
+  padding: .75em;
   border-radius: var(--border-radius);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.5em;
 }
 
 #file-upload-preview-inner {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: .25rem;
+  margin-bottom: .25em;
 }
 
 #file-upload-preview-inner>div {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 0.781rem;
+  gap: 0.781em;
 }
 
 #lpx #uploading-file {
-  font-size: 0.75rem;
+  font-size: 0.75em;
   color: #576f8a;
   margin-bottom: 0;
 }
 
-#remove-file-btn {
+#emove-file-btn {
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
 }
 
-#remove-file-btn svg {
-  width: 1.5rem;
+#emove-file-btn svg {
+  width: 1.5em;
 }
 
 #file-error-message {
   color: var(--color-accent-critical);
   display: flex;
   align-items: center;
-  gap: 0.673rem;
+  gap: 0.673em;
 }
 
 #file-error-message svg {
-  width: 1.186rem;
+  width: 1.186em;
 }
 
 #file-error-message span {
-  font-size: 0.75rem;
+  font-size: 0.75em;
   color: var(--color-accent-critical);
 }
 
 #submission-note {
-  height: 6.938rem;
-  padding: 0.75rem;
+  height: 6.938em;
+  padding: 0.75em;
   border-radius: 8px;
   border: solid 1px var(--color-stroke);
   background-color: #fff;
   width: 100%;
-  font-size: 0.875rem;
+  font-size: 0.875em;
   font-family: Roboto;
 }
 
@@ -369,7 +369,7 @@
   justify-content: flex-start;
   align-items: center;
   gap: 12px;
-  padding: 0.5rem 0.75rem;
+  padding: 0.5em 0.75em;
   border-radius: var(--border-radius);
   border: solid 1px var(--color-stroke);
   background-color: var(--color-bg-content);
@@ -388,7 +388,7 @@
 
 #terms .term-item svg {
   flex-shrink: 0;
-  width: 1.5rem;
+  width: 1.5em;
 }
 
 #terms .term-item:not(.checked) svg:last-of-type {
@@ -413,25 +413,26 @@
   color: var(--color-accent-critical);
 }
 
-#cancel_submission_btn {
+#lpx #cancel_submission_btn {
   cursor: pointer;
+  font-size: .875em;
 }
 
 /**************************** submission_status *****************************/
 #lpx #submission-status-date {
-  margin-bottom: .5rem;
+  margin-bottom: .5em;
 }
 
 #submission-status-bar {
-  padding: 0.75rem;
+  padding: 0.75em;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
   border-radius: var(--border-radius);
   background-color: #fef5f3;
-  margin-bottom: 1rem;
-  font-size: 0.875rem;
+  margin-bottom: 1em;
+  font-size: 0.875em;
 }
 
 #submission-status-bar-title {
@@ -448,27 +449,31 @@
   background-color: #f8fcf7;
 }
 
+#submission-status-bar.has_not_submitted {
+  background-color: #fff4df;
+}
+
 #lpx #see-results-btn {
-  font-size: 0.875rem;
+  font-size: 0.875em;
   cursor: pointer;
 }
 
 /**************************** submission_response *****************************/
 #reviewer-note-content {
-  padding: 1.5rem;
+  padding: 1.5em;
   border-radius: var(--border-radius);
   background-color: #f6f6f7;
 }
 
 #submission-response-tabs {
-  margin-bottom: 1rem;
+  margin-bottom: 1em;
 }
 
 .submission-response-tab {
   flex-grow: 0;
   font-weight: 500;
   color: var(--color-primary);
-  padding: 0.5rem 0;
+  padding: 0.5em 0;
   border-bottom: 2px solid var(--color-primary);
   display: inline-block;
 }
@@ -481,14 +486,14 @@
   justify-content: flex-start;
   align-items: center;
   gap: 8px;
-  padding: 0.75rem;
+  padding: 0.75em;
   border-radius: var(--border-radius);
   background-color: #fff4df;
-  margin-bottom: 1rem;
+  margin-bottom: 1em;
 }
 
 #need_to_fix svg {
-  width: 1.25rem;
+  width: 1.25em;
 }
 
 #need_to_fix span {
@@ -502,7 +507,7 @@
 }
 
 #lpx #criteria-groups li.criteria-group {
-  margin: 0 0 1rem 0;
+  margin: 0 0 1em 0;
 }
 
 #lpx ul.criteria-responses {
@@ -523,7 +528,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem;
+  padding: 1em;
   cursor: pointer;
   border-top: 1px solid #cfdbe8;
 }
@@ -545,17 +550,17 @@ li.criterion:first-of-type .criterion-header {
 .criterion-header-title {
   display: flex;
   align-items: center;
-  gap: 0.875rem;
+  gap: 0.875em;
 }
 
 .criterion-header-title svg {
-  width: 1.25rem;
+  width: 1.25em;
   flex-shrink: 0;
 }
 
 .criterion-header-angle svg {
-  width: 1.5rem;
-  margin-left: 0.75rem;
+  width: 1.5em;
+  margin-left: 0.75em;
   transform: rotate(90deg);
   transition: 0.2s;
 }
@@ -571,14 +576,14 @@ li.criterion:first-of-type .criterion-header {
 }
 
 .criterion-feedback-inner {
-  padding: 1.5rem;
+  padding: 1.5em;
 }
 
 .criterion-feedback-inner .feedback-content {
-  padding: 1rem;
+  padding: 1em;
   border-radius: 6px;
   background-color: rgba(216, 44, 13, 0.05);
-  margin-bottom: 1rem;
+  margin-bottom: 1em;
 }
 
 .criterion-feedback-inner .feedback-content.passed {
@@ -588,30 +593,34 @@ li.criterion:first-of-type .criterion-header {
 .feedback-content img {
   display: block;
   width: 100%;
-  border: .7rem solid var(--color-accent-critical);
-  margin: 1rem 0;
+  border: 2px solid var(--color-accent-critical);
+  margin: 1em 0;
 }
 
 .feedback-content.passed img {
-  border: .7rem solid var(--color-accent-success);
+  border: 2px solid var(--color-accent-success);
 }
 
 /* submission_history  */
 #lpx #submission-history-label {
-  font-size: 0.875rem;
+  font-size: 0.875em;
   color: #576f8a;
 }
 
 /* submission_history  */
-/* max heigh của options ~ 9rem => cho padding bottom 10rem để chừa chỗ trống cho options show  */
+/* max heigh của options ~ 9em => cho padding bottom 10em để chừa chỗ trống cho options show  */
 #submission-history-container {
-  padding: 0 0 2rem 0;
+  padding: 0 0 2em 0;
+
 }
 
+
+
 #submission_history {
-  width: 21.875rem;
+  width: 21.875em;
   position: relative;
   transition: .2s;
+
 }
 
 #submission_history-select {
@@ -620,7 +629,6 @@ li.criterion:first-of-type .criterion-header {
   border: solid 1px var(--color-stroke);
   padding: 1px;
   position: relative;
-
 }
 
 #submission_history-select.is--focus {
@@ -631,8 +639,8 @@ li.criterion:first-of-type .criterion-header {
   flex: 1;
   border: none;
   outline: none;
-  padding: 1rem;
-  font-size: 0.875rem !important;
+  padding: 1em;
+  font-size: 0.875em !important;
 }
 
 #submission_history-input::placeholder,
@@ -641,14 +649,14 @@ li.criterion:first-of-type .criterion-header {
 }
 
 #submission_history-svg-container {
-  padding: 0 1rem;
+  padding: 0 1em;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 #submission_history-svg-container svg {
-  width: 1.5rem;
+  width: 1.5em;
   transform: rotate(-90deg);
   transition: 0.2s;
 }
@@ -658,12 +666,36 @@ li.criterion:first-of-type .criterion-header {
 }
 
 #history-options-container {
-  margin-top: 0.375rem;
-  padding: .2rem;
+  margin-top: 0.375em;
+  padding: .2em;
   box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1), 0 0 2px 0 rgba(0, 0, 0, 0.2);
   border-radius: var(--border-radius);
   position: relative;
   background: white;
+  /* animation: name duration timing-function delay iteration-count direction fill-mode; */
+  /* animation: history_animation .3s; */
+}
+
+@keyframes history_animation_open {
+  from {
+    max-height: 0;
+  }
+
+  to {
+    max-height: 200px;
+  }
+}
+
+@keyframes history_animation_close {
+  0% {
+    max-height: 200px;
+    padding: .2em;
+  }
+
+  100% {
+    max-height: 0;
+    padding: 0 .2em;
+  }
 }
 
 #history-options-container.overflow::after {
@@ -672,7 +704,7 @@ li.criterion:first-of-type .criterion-header {
   content: '';
   top: 0;
   bottom: 0;
-  right: .775rem;
+  right: .775em;
   width: 1px;
   background: #e8e8e8;
 }
@@ -685,8 +717,8 @@ li.criterion:first-of-type .criterion-header {
   /* position: absolute; */
   left: 0;
   right: 0;
-  top: calc(100% + 0.375rem);
-  max-height: 9.438rem;
+  top: calc(100% + 0.375em);
+  max-height: 9.438em;
   padding: 0;
   /* border-radius: var(--border-radius); */
   /* box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1), 0 0 2px 0 rgba(0, 0, 0, 0.2); */
@@ -694,12 +726,12 @@ li.criterion:first-of-type .criterion-header {
 }
 
 #lpx #history-options-container.overflow #submission_history-options {
-  padding: 0 .2rem 0 0;
+  padding: 0 .2em 0 0;
 }
 
 /* scroll bar  */
 #lpx #submission_history-options::-webkit-scrollbar {
-  width: .375rem;
+  width: .375em;
 }
 
 
@@ -711,9 +743,9 @@ li.criterion:first-of-type .criterion-header {
 #submission_history-options li.submission_history-option {
   cursor: pointer;
   margin: 0 !important;
-  padding: 0.75rem 1rem;
+  padding: 0.75em 1em;
   background-color: #fff;
-  font-size: 0.875rem;
+  font-size: 0.875em;
   font-family: 'Roboto', sans-serif;
 }
 
@@ -743,20 +775,20 @@ li.criterion:first-of-type .criterion-header {
 #confirm-submit-prompt {
   border: 1px solid #000;
   background: white;
-  padding: 1.5rem;
-  width: 43.75rem;
+  padding: 1.5em;
+  width: 43.75em;
   border-radius: var(--border-radius);
 }
 
 #confirm-submit-text {
   padding: 0px;
-  margin: 0 0 1.5rem 0;
+  margin: 0 0 1.5em 0;
 }
 
 #confirm-submit-btns {
   display: flex;
   justify-content: flex-end;
-  gap: 0.625rem;
+  gap: 0.625em;
 }
 
 /* error message  */
@@ -834,4 +866,38 @@ li.criterion:first-of-type .criterion-header {
 
 .modal-content.lpx-modal-content {
   position: static !important;
+}
+
+#lpx #common-message {
+  padding: .25em .5em;
+  display: flex;
+  align-items: center;
+  gap: .5em;
+  font-size: .75em;
+  font-family: 'Roboto', sans-serif;
+  border-radius: var(--border-radius);
+}
+
+#lpx #common-message.success {
+  background: #f2ffee;
+}
+
+#lpx #common-message.success span {
+  color: var(--color-accent-success);
+}
+
+#lpx #common-message.success svg:first-of-type {
+  display: none;
+}
+
+#lpx #common-message.error {
+  background: rgba(216, 44, 13, 0.05);
+}
+
+#lpx #common-message.error span {
+  color: var(--color-accent-critical);
+}
+
+#lpx #common-message.error svg:last-of-type {
+  display: none;
 }

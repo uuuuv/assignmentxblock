@@ -41,6 +41,7 @@ function AssignmentXBlock(runtime, element) {
                 };
 
             this.view = view;
+            this.is_rendering = false
         }
 
         init() {
@@ -83,6 +84,14 @@ function AssignmentXBlock(runtime, element) {
         }
 
         renderOptions(options) {
+            if (this.is_rendering) return;
+
+            this.is_rendering = true
+            const existingOptionsContainer = this.getEleById(this.OPTIONS_CONTAINER_ID);
+            if (existingOptionsContainer) {
+                existingOptionsContainer.remove()
+            }
+
             const ul = this.createEle("ul");
             ul.id = this.OPTIONS_ID;
             options.forEach((option) => {
@@ -95,12 +104,15 @@ function AssignmentXBlock(runtime, element) {
             if (options.length > 3) {
                 container.classList.add('overflow')
             }
+
+            container.style.animation = 'history_animation_open .4s'
+
             container.appendChild(ul);
 
             this.getEleById(this.MAIN_ID).appendChild(container);
             // this.getEleById(this.MAIN_ID).appendChild(ul);
-            // resize_unit(60, ".2s")
-
+            resize_unit(container.scrollHeight, '.2s')
+            this.is_rendering = false
         }
 
         createOptionEle(val) {
@@ -127,12 +139,24 @@ function AssignmentXBlock(runtime, element) {
         }
 
         removeOptions() {
+            if (this.is_rendering) return;
+
+            this.is_rendering = true
             const optionsContainer = this.getEleById(this.OPTIONS_CONTAINER_ID);
             if (optionsContainer) {
-                const containerHeight = document.getElementById(this.MAIN_ID).offsetHeight;
+                // const containerHeight = document.getElementById(this.MAIN_ID).offsetHeight;
                 // document.getElementById(this.MAIN_ID).style.height = `${containerHeight - optionsContainer.offsetHeight}px`
-                optionsContainer.remove();
+
                 // resize_unit(0, ".2s")
+                resize_unit(-optionsContainer.scrollHeight + 2, '.4s')
+                optionsContainer.style.overflow = 'hidden'
+                optionsContainer.style.animation = 'history_animation_close .2s forwards'
+                setTimeout(() => {
+                    optionsContainer.remove();
+                    this.is_rendering = false
+                }, 200);
+            } else {
+                this.is_rendering = false
             }
 
         }
@@ -151,7 +175,6 @@ function AssignmentXBlock(runtime, element) {
             this.getEleById(this.INPUT_ID).value = this.chosenValue.date;
             this.getEleById(this.SELECT_ID).classList.remove("is--focus");
             this.removeOptions();
-
         }
 
         onInputChangeHandler(val) {
@@ -208,16 +231,20 @@ function AssignmentXBlock(runtime, element) {
 
     $(function ($) {
         /* Here's where you'd do things on page load. */
-        init().then(() => {
-            if (localStorage.getItem('should_scroll_to_status_position') === '1') {
-                localStorage.removeItem('should_scroll_to_status_position');
-                scroll_to_top(document.getElementById('submission-status').getBoundingClientRect().top + window.scrollY - 250);
+        window.addEventListener('message', (event) => {
+            const data = event.data
+
+            if (data.type === "learningprojectxblock") {
+                if (data.reload) {
+                    init().catch(console.error)
+                }
             }
-        }).catch(console.error)
+        });
+
+        init().catch(console.error)
     })
 
     async function init(submission_id = undefined) {
-
         let initialData = {}
         try {
             initialData = await _get_initial_data(submission_id);
@@ -327,28 +354,20 @@ function AssignmentXBlock(runtime, element) {
 
 
         if (status === "has_not_submitted") {
-            init_submit_handlers();
         } else if (status === "unable_to_review") {
-            init_submit_handlers();
             init_submission_history(submissions, data.submission)
             _render_submission_date(data.submission.date * 1000)
-            _init_show_results_btn_handler()
         } else if (status === "not_graded") {
             init_submission_history(submissions, data.submission)
             _render_submission_date(data.submission.date * 1000)
-            _init_show_results_btn_handler()
-            _init_cancel_submission_handler()
         } else if (status === "passed") {
             init_criteria_handlers();
             init_submission_history(submissions, data.submission)
             _render_submission_date(data.submission.date * 1000)
-            _init_show_results_btn_handler()
         } else if (status === "did_not_pass") {
-            init_submit_handlers();
             init_criteria_handlers();
             init_submission_history(submissions, data.submission)
             _render_submission_date(data.submission.date * 1000)
-            _init_show_results_btn_handler()
         } else {
             // internal_server_error
             // do nothing
@@ -358,296 +377,12 @@ function AssignmentXBlock(runtime, element) {
     }
 
 
-    function init_submit_handlers() {
-        _init_file_input_handlers();
-        _init_term_inputs_hadnlers();
-
-        $("#confirm-submit-btn", element).click(() => {
-            submit();
-        });
-
-        $("#cancel-submit-btn", element).click(() => {
-            _toggle_confirm_submit_modal(false);
-        });
-
-        $("#submit-form", element).submit((e) => {
-            e.preventDefault();
-            _toggle_confirm_submit_modal(true);
-            scroll_to_top(document.getElementById('confirm-submit-prompt').getBoundingClientRect().top - element.getBoundingClientRect().top + window.scrollY);
-        });
-    }
-
-    function _init_file_input_handlers() {
-        $("#file-input").change(function (eventObject) {
-            const files = Array.from(eventObject.target.files);
-
-            if (files.length > 1) return;
-
-            const file = files[0];
-
-            if (!file) {
-                _toggle_display("#file-upload-preview", false)
-                _toggle_display("label[for=file-input]", true)
-                $("#chosen-file-name", element).text("");
-            } else {
-                _toggle_display("#file-upload-preview", true)
-                _toggle_display("label[for=file-input]", false)
-                $("#chosen-file-name", element).text(file.name);
-            }
-
-            const fileErrorMsg = _file_is_valid(file);
-            _toggle_file_error_msg(fileErrorMsg);
-            _toggle_next_step_to_submit(fileErrorMsg === '');
-
-            if (_is_valid_to_submit(element)) {
-                $("#submit-btn", element).removeClass("lpx-btn-disabled");
-            } else {
-                $("#submit-btn", element).addClass("lpx-btn-disabled");
-            }
-
-            resize_unit();
-        });
-
-        $("#remove-file-btn", element).click(function () {
-
-            // disable and hide submit btn
-            $("#submit-btn", element).addClass("lpx-btn-disabled");
-            _toggle_display("#submit-btn", false);
-
-            // set file input value to empty
-            $("#file-input", element).val("");
-
-            // show choose file btn
-            _toggle_display("label[for=file-input]", true);
-
-            // hide file upload preview and remove file name from it
-            _toggle_display("#file-upload-preview", false);
-            $("#chosen-file-name", element).text("");
-
-            // hide terms and uncheck all term items
-            _toggle_terms(false);
-
-            // hide submission notes, still keep its content
-            _toggle_display("#submission-note-container", false);
-
-            // clear the file error message if there is one
-            _toggle_file_error_msg('');
-            _toggle_submit_error('')
-
-            // resize
-            resize_unit();
-        });
-    }
-
     function _toggle_display(selector, should_show) {
         if (should_show) {
             $(selector, element).removeClass('d-none')
         } else {
             $(selector, element).addClass('d-none')
         }
-    }
-
-    function _toggle_terms(should_show) {
-        if (should_show) {
-            _toggle_display('#terms', true);
-        } else {
-            _toggle_display('#terms', false);
-            _uncheck_all_term_items();
-        }
-    }
-
-    function _uncheck_all_term_items() {
-        $('.term-item input', element).each(function (_) {
-            this.checked = false;
-        })
-
-        $('.term-item', element).each(function (_) {
-            this.classList.remove('checked');
-        })
-    }
-
-    function _toggle_file_error_msg(msg) {
-        const container = $("#file-error-message", element);
-        const text = $("#file-error-message span", element);
-        if (msg) {
-            text.text(msg);
-            container.removeClass("d-none");
-        } else {
-            text.text("");
-            container.addClass("d-none");
-        }
-    }
-
-    function _toggle_next_step_to_submit(should_show) {
-        if (should_show) {
-            _toggle_terms(true)
-            _toggle_display('#submission-note-container', true);
-            _toggle_display('#submit-btn', true);
-        } else {
-            _toggle_display('#terms', false);
-            _toggle_display('#submission-note-container', false);
-            _toggle_display('#submit-btn', false);
-        }
-    }
-
-    function _init_term_inputs_hadnlers() {
-        $(".term-item input", element).each(function () {
-            $(this).on("change", function () {
-                const is_checked = $(this).prop('checked');
-
-                const term_item = $(this).parentsUntil('.term-item').parent();
-
-                if (is_checked) {
-                    term_item.addClass('checked');
-                } else {
-                    term_item.removeClass('checked')
-                }
-
-                if (_is_valid_to_submit()) {
-                    $("#submit-btn", element).removeClass("lpx-btn-disabled");
-                } else {
-                    $("#submit-btn", element).addClass("lpx-btn-disabled");
-                }
-            });
-        });
-    }
-
-    function _file_is_valid(file) {
-        const basic_data = _get_basic_data();
-        const ALLOWED_FILE_TYPES = basic_data.allowed_file_types.split(',').map(item => item.trim())
-        const MAX_FILE_SIZE = basic_data.max_file_size;
-
-        const ext = file.name.split(".").pop().toLowerCase();
-
-        if (!ALLOWED_FILE_TYPES.includes(ext)) {
-            return `${gettext('Only the following file types are allowed:')} ${basic_data.allowed_file_types}`;
-
-        } else if (file.size > MAX_FILE_SIZE * 1024 * 1024) {
-
-            return `${gettext('File is too large. Only allowed maximum')} ${MAX_FILE_SIZE}mb`;
-        }
-
-        return "";
-    }
-
-    function _is_valid_to_submit() {
-        let allTermsAreChecked = true;
-
-        $(".term-item input", element).each(function () {
-            const isChecked = $(this).prop("checked");
-            if (!isChecked) allTermsAreChecked = false;
-        });
-
-        if (!allTermsAreChecked) return false;
-
-        const file = $("#file-input", element).prop("files")[0];
-        if (!file) return false;
-
-        if (_file_is_valid(file)) return false;
-
-        return true;
-    }
-
-    function submit() {
-
-        // _toggle_loading_modal(true);
-        $("#confirm-submit-modal", element).addClass("d-none");
-        _toggle_submit_error("")
-        _upload_file()
-            .then(file_uploaded => {
-                _toggle_submit_error("");
-                _submit_to_portal(file_uploaded.file_url).then(() => {
-                    localStorage.setItem('should_scroll_to_status_position', '1')
-                    _reload();
-
-                }).catch(error => {
-                    _toggle_loading_modal(false);
-                    _toggle_submit_error(error);
-                });
-            })
-            .catch(error => {
-                // _toggle_loading_modal(false);
-                _toggle_submit_error(error);
-            });
-    }
-
-    function _upload_file() {
-        const file = Array.from($("#file-input", element).prop("files"))[0];
-        const formData = new FormData();
-        formData.append('file', file);
-        _togger_uploading_file(true)
-        return new Promise((res, rej) => {
-            $.ajax({
-                url: runtime.handlerUrl(element, "learning_project_upload_file"),
-                data: formData,
-                type: 'POST',
-                processData: false,
-                contentType: false,
-                success: function (response) {
-                    res(response);
-                    _togger_uploading_file(false)
-                }, error: function (xhr, status, error) {
-                    console.error(xhr, status, error);
-
-                    if (xhr.responseJSON) {
-                        if (xhr.status === 413 && xhr?.responseJSON?.success) {
-                            rej(xhr.responseJSON.success);
-                        }
-                        rej(xhr.responseJSON.message);
-                    }
-                    rej("Internal Server Error");
-                    _togger_uploading_file(false)
-                }
-            })
-        })
-    }
-
-    function _submit_to_portal(download_url) {
-        const submission_note = $("#submission-note", element).val();
-
-        const basic_data = _get_basic_data(element);
-
-        const requestData = {
-            username: basic_data.username || 'edx',
-            project_name: basic_data.assignment_name,
-            email: basic_data.email,
-            submission_url: download_url,
-            submission_note: submission_note,
-            course_code: basic_data.course_code,
-        };
-
-        return new Promise((res, rej) => {
-            $.ajax({
-                url: basic_data.portal_submit_url,
-                type: "POST",
-                data: JSON.stringify(requestData),
-                contentType: "application/json",
-                // xhrFields: {
-                //     withCredentials: true
-                // },
-                success: function (response) {
-                    res(response);
-                },
-                error: function (xhr, status, error) {
-                    console.error(xhr, status, error);
-
-                    if (xhr?.responseJSON?.message) {
-                        rej(xhr.responseJSON.message);
-                    } else {
-                        rej("Internal Server Error");
-                    }
-                },
-            });
-        });
-    }
-
-    function _toggle_confirm_submit_modal(is_show) {
-        if (is_show) {
-            $("#confirm-submit-modal", element).removeClass("d-none");
-        } else {
-            $("#confirm-submit-modal", element).addClass("d-none");
-        }
-
     }
 
     function _reload() {
@@ -662,15 +397,6 @@ function AssignmentXBlock(runtime, element) {
         }
     }
 
-    function _toggle_submit_error(message) {
-        if (message === "") {
-            $("#submit-error-message", element).addClass("d-none");
-            $("#submit-error-message", element).text("");
-        } else {
-            $("#submit-error-message", element).removeClass("d-none");
-            $("#submit-error-message", element).text(message);
-        }
-    }
 
     function init_criteria_handlers() {
         const headers = Array.from(document.querySelectorAll('.criterion-header'));
@@ -750,81 +476,12 @@ function AssignmentXBlock(runtime, element) {
     }
 
     function _post_message(data) {
-        window.parent.postMessage({ type: 'learningprojectxblock', ...data }, "*")
+        window.parent.postMessage({ type: 'learningprojectxblock', unit_usage_id: $('#portal-data', element).data('unit-usage-id'), ...data }, "*")
     }
 
     function _render_submission_date(timestamp) {
         $('#submission-status-date span', element).text(new Date(timestamp).toLocaleString())
     }
-
-    function _init_show_results_btn_handler() {
-        $('#see-results-btn', element).click(function (event) {
-            $('#submission-results', element).removeClass('d-none')
-            $(this).addClass('d-none')
-        })
-    }
-
-    function _togger_uploading_file(should_show) {
-        if (should_show) {
-            $('#uploading-file', element).removeClass('d-none')
-        } else {
-            $('#uploading-file', element).addClass('d-none')
-        }
-    }
-
-    function _init_cancel_submission_handler() {
-
-        $('#cancel_submission_btn', element).click(function () {
-            $.ajax({
-                url: $('#portal-data', element).data('portal-cancel-submission-url'),
-                type: "POST",
-                data: JSON.stringify({
-                    submission_id: $(this).data('submission-id'),
-                    email: $('#portal-data', element).data('email')
-                }),
-                // xhrFields: {
-                //     withCredentials: true
-                // },
-                headers: { "Content-Type": "application/json" },
-                success: function (response) {
-                    console.log("canceled successfully")
-                    console.log("canceled successfully")
-                    console.log("canceled successfully")
-                    console.log("canceled successfully")
-                    console.log("canceled successfully")
-                    console.log("canceled successfully")
-                    console.log("canceled successfully")
-                    console.log("canceled successfully")
-                    console.log("canceled successfully")
-                    console.log("canceled successfully")
-                    console.log("canceled successfully")
-                    console.log("canceled successfully")
-                    console.log("canceled successfully")
-                    console.log("canceled successfully")
-                    console.log("canceled successfully")
-                },
-                error: function (xhr, status, error) {
-                    console.error(xhr, status, error);
-                    console.error(xhr, status, error);
-                    console.error(xhr, status, error);
-                    console.error(xhr, status, error);
-                    console.error(xhr, status, error);
-                    console.error(xhr, status, error);
-                    // if (xhr.responseJSON) {
-                    //     if (typeof xhr.responseJSON.message === 'string') {
-                    //         rej(xhr.responseJSON.message);
-                    //     }
-
-                    //     if (typeof xhr.responseJSON.error === 'string') {
-                    //         rej(xhr.responseJSON.error);
-                    //     }
-                    // }
-                    // rej("Internal Server Error");
-                },
-            });
-        })
-    }
-
 }
 
 

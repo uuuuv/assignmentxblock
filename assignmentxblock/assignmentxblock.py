@@ -1,7 +1,12 @@
 import pkg_resources
 from web_fragments.fragment import Fragment
 from xblock.core import XBlock
-from .config import get_config
+from .config import (
+    get_config, 
+    PORTAL_SUBMIT_URL,
+    PORTAL_GET_SUBMISSION_URL,
+    PORTAL_CANCEL_SUBMISSION_URL
+)
 import logging
 from xblock.fields import Integer, Scope, String, XMLString, Boolean
 from django.template import Template, Context
@@ -57,8 +62,6 @@ class AssignmentXBlock(XBlock):
         default=""
     )
 
-
-
     submission_note = String(
         default="",
         scope=Scope.user_state,
@@ -88,12 +91,17 @@ class AssignmentXBlock(XBlock):
         help="Display name"
     )
 
+    is_result_unit = Boolean(
+        help="Is Unit which displays Project Result",
+        default=True
+    )
+
     def max_score(self):
         return self.total_score
 
     @property
     def has_score(self):
-        return True
+        return not self.is_result_unit
     
     @property
     def course_id(self):
@@ -126,13 +134,19 @@ class AssignmentXBlock(XBlock):
         rendered_html = template.render(Context(context))
         frag = Fragment(rendered_html)
         frag.add_css(self.resource_string(CSS_PATH))
-        frag.add_javascript(self.resource_string(JS_PATH))
+        # frag.add_javascript(self.resource_string(JS_PATH))
+        if self.is_result_unit:
+            frag.add_javascript(self.resource_string('static/js/unit_2.js'))
+        else: 
+            frag.add_javascript(self.resource_string('static/js/unit_1.js'))
+            
         frag.initialize_js('AssignmentXBlock')
 
         return frag
     
     def studio_view(self, context=None):
         context = {
+            "is_result_unit": self.is_result_unit,
             "max_file_size": self.max_file_size,
             "html_content": self.html_content,
             "allowed_file_types": self.allowed_file_types,
@@ -295,7 +309,14 @@ class AssignmentXBlock(XBlock):
 
         context.update(data)
 
-        template_path = get_template_path(status)
+        # template_path = get_template_path(status)
+        if status == 'error':
+            template_path = f"templates/error.html"
+        if self.is_result_unit:
+            template_path = f"templates/unit_2.html"
+        else: 
+            template_path = f"templates/unit_1.html"
+
         template_str = self.resource_string(template_path)
         template = Template(template_str)
         rendered_html = template.render(Context(context))
@@ -309,10 +330,12 @@ class AssignmentXBlock(XBlock):
         file_input_accepts = ', '.join(list(map(lambda ext: f'.{ext}', self.allowed_file_types.split(','))))
         context = {
             "email": self.get_user_email(),
+            "is_result_unit": self.is_result_unit,
             "assignment_name": self.assignment_name,
             "course_id": self.course_id,
-            "PORTAL_GET_SUBMISSION_URL": get_config('PORTAL_GET_SUBMISSION_URL'),
-            "PORTAL_SUBMIT_URL": get_config('PORTAL_SUBMIT_URL'),
+            "PORTAL_GET_SUBMISSION_URL": PORTAL_GET_SUBMISSION_URL,
+            "PORTAL_SUBMIT_URL": PORTAL_SUBMIT_URL,
+            "PORTAL_CANCEL_SUBMISSION_URL": PORTAL_CANCEL_SUBMISSION_URL,
             "block": self,
             "max_file_size": self.max_file_size, 
             "allowed_file_types": self.allowed_file_types,
@@ -323,6 +346,8 @@ class AssignmentXBlock(XBlock):
             "file_url": self.file_url,
             "uploaded_successfully": self.uploaded_successfully,
             "submission_note": self.submission_note,
+            "usage_id": self.scope_ids.usage_id,
+            "unit_usage_id": self.get_parent().scope_ids.usage_id
         }
 
         return context
@@ -346,10 +371,27 @@ class AssignmentXBlock(XBlock):
 
     @XBlock.json_handler
     def update_settings(self, data, context=None, request=None):
+        self.is_result_unit = data.get('is_result_unit')
         self.max_file_size = data.get('max_file_size')
         self.html_content = data.get('html_content')
         self.allowed_file_types =  data.get('allowed_file_types')
         self.total_score = data.get('score')
         return {
             "message": "settings saved"
+        }
+
+    @XBlock.json_handler
+    def delete_uploaded_file(self, data, context=None, request=None):
+        self.file_url = ''
+        self.file_name = ''
+        self.submission_note = ''
+        return {
+            "message": "success"
+        }
+
+    @XBlock.json_handler
+    def save_submission_note(self, data, context=None, request=None):
+        self.submission_note = data.get('submission_note')
+        return {
+            "message": "success"
         }

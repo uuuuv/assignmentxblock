@@ -1,0 +1,27 @@
+{% load i18n %}
+
+<h1>{{file_name}}</h1>
+<h1>{{file_url}}</h1>
+<h1>{{submission_note}}</h1>
+
+{% if not submission %}
+{% include "components/submit_project.html" %}
+{% endif %}
+
+{% if submission %}
+    {% include "components/submission_status.html" %}
+
+    {% if submission.result == 'did_not_pass' or submission.result == 'unable_to_review'%}
+        {% if not should_show_resubmit %}
+            <button id="resubmit-btn" class="lpx-btn lpx-btn-secondary">Resubmit</button>
+        {% endif %}
+
+        <div id="resubmit-container" class="{% if not should_show_resubmit %}d-none{% endif %}">
+            {% include "components/submit_project.html" %}
+        </div>
+    {% endif %}
+{% endif %}
+
+{% include "components/common_message.html" %}
+
+

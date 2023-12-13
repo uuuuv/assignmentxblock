@@ -1,6 +1,5 @@
 {% load i18n %}
 <div id='lpx'>
-
   <div id="learningprojectxblock"></div>
 
   <span
@@ -11,10 +10,15 @@
     data-course-id="{{course_id}}"
     data-assignment-name="{{assignment_name}}"
     data-portal-submit-url="{{PORTAL_SUBMIT_URL}}"
+    data-portal-cancel-submission-url="{{PORTAL_CANCEL_SUBMISSION_URL}}"
     data-allowed-file-types="{{allowed_file_types}}"
     data-max-file-size="{{max_file_size}}"
     data-download-url="{{download_url}}"
     data-submission-note="{{submission_note}}"
+    data-file-url="{{file_url}}"
+    data-file-name="{{file_name}}"
+    data-portal-host="{{PORTAL_HOST}}"
+    data-unit-usage-id="{{unit_usage_id}}"
   ></span>
 
   <div id="loading-modal" class='d-none'>
