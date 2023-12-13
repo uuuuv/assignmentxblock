@@ -27,13 +27,13 @@ class DjangoStorageUploader(UploaderBase):
 
     @staticmethod
     def _get_download_url(object_key):
-        lms_host = get_config('LMS_HOST', '')
+        LMS_BASE = get_config('LMS_BASE', '')
         subfix = f"{settings.MEDIA_URL}{object_key}"
 
-        if lms_host == '':
+        if LMS_BASE == 'localhost:18000':
             return f"http://localhost:18000{subfix}"
          
-        return f"https://{lms_host}{subfix}"
+        return f"https://{LMS_BASE}{subfix}"
     
 class S3Uploader(UploaderBase):
     AWS_S3_REGION_NAME = get_config('AWS_S3_REGION_NAME')
