@@ -1,9 +1,5 @@
 {% load i18n %}
 
-<h1>{{file_name}}</h1>
-<h1>{{file_url}}</h1>
-<h1>{{submission_note}}</h1>
-
 {% if not submission %}
 {% include "components/submit_project.html" %}
 {% endif %}

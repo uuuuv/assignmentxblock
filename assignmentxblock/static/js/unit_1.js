@@ -425,10 +425,6 @@ function AssignmentXBlock(runtime, element) {
         });
     }
 
-    function _reload() {
-        window.location.reload();
-    }
-
     function _toggle_loading_modal(should_show) {
         if (should_show) {
             $("#loading-modal", element).removeClass("d-none");
