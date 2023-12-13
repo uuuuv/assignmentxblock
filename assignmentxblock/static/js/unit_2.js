@@ -428,8 +428,8 @@ function AssignmentXBlock(runtime, element) {
             day: "numeric",
         };
 
-
-        const transformed_submissions = submissions.map(item => ({ date: new Date(item.create_date * 1000).toLocaleString(undefined, options), id: item.id }));
+        const language = $.cookie('openedx-language-preference') || 'vi'
+        const transformed_submissions = submissions.map(item => ({ date: new Date(item.create_date * 1000).toLocaleString(language, options), id: item.id }));
 
         transformed_submissions.reverse()
 
@@ -480,7 +480,12 @@ function AssignmentXBlock(runtime, element) {
     }
 
     function _render_submission_date(timestamp) {
-        $('#submission-status-date span', element).text(new Date(timestamp).toLocaleString())
+        const language = $.cookie('openedx-language-preference') || 'vi'
+        $('#submission-status-date span', element).text(new Date(timestamp).toLocaleString(language, {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+        }))
     }
 }
 

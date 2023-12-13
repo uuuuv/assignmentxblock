@@ -5,11 +5,7 @@ const UNIT_HEIGHT_TRANSITION = 0.2; // để transition đồng bộ khi collaps
 function AssignmentXBlock(runtime, element) {
 
     $(function ($) {
-        /* Here's where you'd do things on page load. */
-
-        init().catch(console.error).finally(() => {
-            // resize_unit()
-        })
+        init().catch(console.error)
     })
 
     async function init(submission_id = undefined, additional_data = {}) {
@@ -43,7 +39,7 @@ function AssignmentXBlock(runtime, element) {
             assignment_name,
             portal_submit_url,
             max_file_size,
-            allowed_file_types
+            allowed_file_types,
         }
     }
 
@@ -59,8 +55,6 @@ function AssignmentXBlock(runtime, element) {
 
         const headers = { "Content-Type": "application/json" }
 
-        const url = data.portalInitialUrl;
-
         return new Promise((res, rej) => {
             // uuuuv Need to change here for prod
             // $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
@@ -70,7 +64,7 @@ function AssignmentXBlock(runtime, element) {
             // });
 
             $.ajax({
-                url: url,
+                url: data.portalInitialUrl,
                 type: "POST",
                 data: JSON.stringify(requestData),
                 // xhrFields: {
@@ -119,8 +113,6 @@ function AssignmentXBlock(runtime, element) {
         $('#learningprojectxblock', element).html(template);
 
         const status = data.status;
-        const submissions = data?.submissions;
-
 
         if (status === "has_not_submitted") {
             init_submit_handlers();
@@ -130,7 +122,7 @@ function AssignmentXBlock(runtime, element) {
             _render_submission_date(data.submission.date * 1000)
         } else if (status === "not_graded") {
             _render_submission_date(data.submission.date * 1000)
-            _init_cancel_submission_handler()
+            _init_cancel_submission_handler(Math.round(Number(data.submission.date)))
         } else if (status === "passed") {
             _render_submission_date(data.submission.date * 1000)
         } else if (status === "did_not_pass") {
@@ -143,6 +135,7 @@ function AssignmentXBlock(runtime, element) {
         }
 
         _toggle_loading_modal(false);
+        // resize_unit()
     }
 
 
@@ -177,39 +170,24 @@ function AssignmentXBlock(runtime, element) {
 
             const fileErrorMsg = _file_is_valid(file);
             common_msg(fileErrorMsg, 'error')
-            // _toggle_file_error_msg(fileErrorMsg);
 
             if (fileErrorMsg) return;
 
             _upload_file().then(res => {
                 _toggle_next_step_to_submit(true);
             }).catch(msg => {
-                // _toggle_file_error_msg(msg)
-                console.log(msg)
+                console.error(msg)
                 common_msg(msg, 'error')
                 _toggle_next_step_to_submit(false);
             })
-            // _toggle_next_step_to_submit(fileErrorMsg === '');
-
-            // if (_is_valid_to_submit(element)) {
-            //     $("#submit-btn", element).removeClass("lpx-btn-disabled");
-            // } else {
-            //     $("#submit-btn", element).addClass("lpx-btn-disabled");
-            // }
-
-            // resize_unit();
         });
 
         $("#remove-file-btn", element).click(function () {
-            console.log('start delete file')
 
             if ($('#portal-data', element).data('file-url')) {
-                console.log('has uploaded file')
                 _delete_file().then(() => {
                     _removed_file_successfully()
                 }).catch(error => {
-                    console.log('failed to delete file')
-                    // _toggle_file_error_msg(error)
                     common_msg(error, 'error')
                 })
             } else {
@@ -279,18 +257,6 @@ function AssignmentXBlock(runtime, element) {
         $('.term-item', element).each(function (_) {
             this.classList.remove('checked');
         })
-    }
-
-    function _toggle_file_error_msg(msg) {
-        const container = $("#file-error-message", element);
-        const text = $("#file-error-message span", element);
-        if (msg) {
-            text.text(msg);
-            container.removeClass("d-none");
-        } else {
-            text.text("");
-            container.addClass("d-none");
-        }
     }
 
     function _toggle_next_step_to_submit(should_show) {
@@ -374,7 +340,9 @@ function AssignmentXBlock(runtime, element) {
             init(undefined, {
                 client_common_message: gettext('You submitted your assignment successfully'),
                 client_common_message_state: 'success'
-            }).catch(console.error)
+            }).catch(console.error).finally(() => {
+                resize_unit()
+            })
 
         }).catch(error => {
             _toggle_loading_modal(false);
@@ -510,7 +478,8 @@ function AssignmentXBlock(runtime, element) {
     }
 
     function _render_submission_date(timestamp) {
-        $('#submission-status-date span', element).text(new Date(timestamp).toLocaleString(undefined, {
+        const language = $.cookie('openedx-language-preference') || 'vi'
+        $('#submission-status-date span', element).text(new Date(timestamp).toLocaleString(language, {
             year: "numeric",
             month: "long",
             day: "numeric",
@@ -525,43 +494,58 @@ function AssignmentXBlock(runtime, element) {
         }
     }
 
-    function _init_cancel_submission_handler() {
+    function _init_cancel_submission_handler(submit_date = 0) {
+        if (submit_date === 0) return
 
-        $('#cancel_submission_btn', element).click(function () {
-            $.ajax({
-                url: $('#portal-data', element).data('portal-cancel-submission-url'),
-                type: "POST",
-                data: JSON.stringify({
-                    submission_id: $(this).data('submission-id'),
-                    email: $('#portal-data', element).data('email')
-                }),
-                // xhrFields: {
-                //     withCredentials: true
-                // },
-                headers: { "Content-Type": "application/json" },
-                success: function (response) {
-                    _delete_file().catch(console.error)
-                    init(undefined, { should_show_resubmit: true, client_common_message: gettext('You have successfully canceled'), client_common_message_state: 'success' }).catch(console.error)
-                },
-                error: function (xhr, status, error) {
-                    let cancel_error = ''
-                    if (xhr.responseJSON) {
-                        if (typeof xhr.responseJSON.message === 'string') {
-                            cancel_error = xhr.responseJSON.message
+
+
+        const limit = 1800
+        const remain_sec = limit - (Math.round(Date.now() / 1000) - submit_date)
+        if (remain_sec > 0) {
+            const cancel_btn = $('#cancel_submission_btn', element)
+            cancel_btn.removeClass('d-none')
+            cancel_btn.click(function () {
+                $.ajax({
+                    url: $('#portal-data', element).data('portal-cancel-submission-url'),
+                    type: "POST",
+                    data: JSON.stringify({
+                        submission_id: $(this).data('submission-id'),
+                        email: $('#portal-data', element).data('email')
+                    }),
+                    // xhrFields: {
+                    //     withCredentials: true
+                    // },
+                    headers: { "Content-Type": "application/json" },
+                    success: function (response) {
+                        _delete_file().catch(console.error)
+                        init(undefined, { should_show_resubmit: true, client_common_message: gettext('You have successfully canceled'), client_common_message_state: 'success' }).catch(console.error).finally(() => { resize_unit() })
+                    },
+                    error: function (xhr, status, error) {
+                        let cancel_error = ''
+                        if (xhr.responseJSON) {
+                            if (typeof xhr.responseJSON.message === 'string') {
+                                cancel_error = xhr.responseJSON.message
+                            }
+
+                            if (typeof xhr.responseJSON.error === 'string') {
+                                cancel_error = xhr.responseJSON.error
+                            }
+                        } else {
+                            cancel_error = gettext('Internal Server Error')
                         }
 
-                        if (typeof xhr.responseJSON.error === 'string') {
-                            cancel_error = xhr.responseJSON.error
-                        }
-                    } else {
-                        cancel_error = gettext('Internal Server Error')
-                    }
+                        console.error(cancel_error)
+                        common_msg(cancel_error, 'error')
+                    },
+                });
+            })
 
-                    console.error(cancel_error)
-                    common_msg(cancel_error, 'error')
-                },
-            });
-        })
+            setTimeout(() => {
+                cancel_btn.remove()
+            }, remain_sec * 1000)
+
+        }
+
     }
 
     function _delete_file() {
@@ -629,12 +613,14 @@ function AssignmentXBlock(runtime, element) {
             }
             ele.removeClass('d-none')
         }
+        resize_unit()
     }
 
     function _init_ressubmit_btn_handler() {
         $('#resubmit-btn', element).click(function () {
             $(this).addClass('d-none')
             $('#resubmit-container', element).removeClass('d-none')
+            resize_unit()
         })
     }
 

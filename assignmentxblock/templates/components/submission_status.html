@@ -2,7 +2,7 @@
 
 <div>
   <div id="submission-status">
-    
+
     <h2 class="lpx-heading-1">{% trans "Submission Results" %}</h2>
     <p id="submission-status-date">{% trans 'Submission date: ' %}<span>--/--/--</span></p>
   
@@ -52,7 +52,7 @@
 
       {% if not is_result_unit %}
         {% if submission.result == 'not_graded' %}
-          <strong id="cancel_submission_btn" data-submission-id="{{submission.id}}">{% trans "Cancel submission" %}</strong>
+          <strong id="cancel_submission_btn" class="d-none" data-submission-id="{{submission.id}}">{% trans "Cancel submission" %}</strong>
         {% endif %}
       {% endif %}
 
@@ -62,7 +62,7 @@
   {% if is_result_unit %}
     {% if submission %}
       {% if submission.result != 'unable_to_review' %}
-        <div>
+        <div style='display: flex;'>
           <a class='lpx-btn lpx-btn-secondary' href="{{submission.url}}">{% trans "Download Submission" %}</a>
         </div>
       {% endif %}

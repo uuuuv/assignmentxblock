@@ -13,8 +13,6 @@ from django.template import Template, Context
 from webob import Response
 from .fileupload import get_uploader
 from datetime import datetime
-from django.utils import timezone
-import pytz
 import os
 
 logger = logging.getLogger(__name__)
@@ -306,13 +304,11 @@ class AssignmentXBlock(XBlock):
 
                 data['submission']['need_to_fix'] = need_to_fix
 
-
         context.update(data)
 
-        # template_path = get_template_path(status)
         if status == 'error':
             template_path = f"templates/error.html"
-        if self.is_result_unit:
+        elif self.is_result_unit:
             template_path = f"templates/unit_2.html"
         else: 
             template_path = f"templates/unit_1.html"

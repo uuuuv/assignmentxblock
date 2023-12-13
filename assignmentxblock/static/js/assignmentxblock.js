@@ -788,27 +788,8 @@ function AssignmentXBlock(runtime, element) {
                 headers: { "Content-Type": "application/json" },
                 success: function (response) {
                     console.log("canceled successfully")
-                    console.log("canceled successfully")
-                    console.log("canceled successfully")
-                    console.log("canceled successfully")
-                    console.log("canceled successfully")
-                    console.log("canceled successfully")
-                    console.log("canceled successfully")
-                    console.log("canceled successfully")
-                    console.log("canceled successfully")
-                    console.log("canceled successfully")
-                    console.log("canceled successfully")
-                    console.log("canceled successfully")
-                    console.log("canceled successfully")
-                    console.log("canceled successfully")
-                    console.log("canceled successfully")
                 },
                 error: function (xhr, status, error) {
-                    console.error(xhr, status, error);
-                    console.error(xhr, status, error);
-                    console.error(xhr, status, error);
-                    console.error(xhr, status, error);
-                    console.error(xhr, status, error);
                     console.error(xhr, status, error);
                     // if (xhr.responseJSON) {
                     //     if (typeof xhr.responseJSON.message === 'string') {

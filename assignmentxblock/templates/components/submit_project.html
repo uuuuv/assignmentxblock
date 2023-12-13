@@ -14,9 +14,10 @@
     
         <p>{% trans 'Compress your files into a single zip file, up to 500 MB.' %}</p>
 
-        
+        <div style="display: flex">
         <label for="file-input" class="{% if file_url %}{{'d-none'}}{% endif %} lpx-btn lpx-btn-primary">{% trans 'Select file' %}</label>
-        
+        </div>
+
         <input 
             class='d-none' 
             id="file-input" 
@@ -119,7 +120,7 @@
             </li>
         </ul>
 
-        <form id='submit-form'>
+        <form id='submit-form' style="display: flex;">
             <button id='submit-btn' class='lpx-btn lpx-btn-primary lpx-btn-disabled'>{% trans 'Submit Project' %}</button>
         </form>
     
