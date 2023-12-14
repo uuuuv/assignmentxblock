@@ -236,9 +236,11 @@ function AssignmentXBlock(runtime, element) {
 
             if (data.type === "learningprojectxblock") {
                 if (data.reload) {
-                    init().catch(console.error).finally(() => {
-                        resize_unit()
-                    })
+                    init().then().catch(console.error)
+                }
+
+                if (data.resize) {
+                    resize_unit()
                 }
             }
         });
@@ -379,14 +381,6 @@ function AssignmentXBlock(runtime, element) {
     }
 
 
-    function _toggle_display(selector, should_show) {
-        if (should_show) {
-            $(selector, element).removeClass('d-none')
-        } else {
-            $(selector, element).addClass('d-none')
-        }
-    }
-
     function _reload() {
         window.location.reload();
     }
@@ -441,9 +435,9 @@ function AssignmentXBlock(runtime, element) {
             OPTION_HANDLER: function (item) {
                 _toggle_loading_modal(true);
                 init(item.id).catch(console.error).finally(() => {
+                    resize_unit();
                     scroll_to_top(-9000);
                     _toggle_loading_modal(false);
-                    resize_unit();
                 });
             },
             chosenValue: transformed_submissions.find(item => item.id == current_submission.id)
@@ -471,11 +465,12 @@ function AssignmentXBlock(runtime, element) {
     function resize_unit(offset = 0, transition = "none") {
         _post_message({
             resize: {
-                iframeHeight: $('#content').prop('scrollHeight') + offset,
+                iframeHeight: document.getElementById('content').scrollHeight + offset,
                 transition: transition
             }
         })
     }
+
 
     function _post_message(data) {
         window.parent.postMessage({ type: 'learningprojectxblock', unit_usage_id: $('#portal-data', element).data('unit-usage-id'), ...data }, "*")

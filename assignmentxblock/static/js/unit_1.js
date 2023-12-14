@@ -6,6 +6,16 @@ function AssignmentXBlock(runtime, element) {
 
     $(function ($) {
         init().catch(console.error)
+
+        window.addEventListener('message', (event) => {
+            const data = event.data
+
+            if (data.type === "learningprojectxblock") {
+                if (data.resize) {
+                    resize_unit()
+                }
+            }
+        });
     })
 
     async function init(submission_id = undefined, additional_data = {}) {
@@ -342,7 +352,6 @@ function AssignmentXBlock(runtime, element) {
 
         }).catch(error => {
             _toggle_loading_modal(false);
-            _toggle_submit_error(error);
         });
 
     }

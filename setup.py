@@ -23,7 +23,7 @@ def package_data(pkg, roots):
 
 setup(
     name='assignmentxblock-xblock',
-    version='0.2.6.dev0',
+    version='0.2.7.dev0',
     description='assignmentxblock XBlock',   # TODO: write a better description.
     license='UNKNOWN',          # TODO: choose a license: 'AGPL v3' and 'Apache 2.0' are popular.
     # packages=[
