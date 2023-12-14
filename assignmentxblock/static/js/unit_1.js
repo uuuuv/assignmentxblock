@@ -21,6 +21,11 @@ function AssignmentXBlock(runtime, element) {
         }
         const template = await _get_template({ ...initialData, ...additional_data });
         _render_template(initialData, template);
+        setTimeout(() => {
+            if ($('.client_common_message', element).length) {
+                common_msg('')
+            }
+        }, 5000);
     }
 
     function _get_basic_data() {
@@ -486,7 +491,13 @@ function AssignmentXBlock(runtime, element) {
                     headers: { "Content-Type": "application/json" },
                     success: function (response) {
                         _delete_file().catch(console.error)
-                        init(undefined, { should_show_resubmit: true, client_common_message: gettext('You have successfully canceled'), client_common_message_state: 'success' }).catch(console.error).finally(() => { resize_unit() })
+                        init(undefined, { should_show_resubmit: true, client_common_message: gettext('You have successfully canceled'), client_common_message_state: 'success' })
+                        _post_message({
+                            reload: true
+                        })
+                            .catch(console.error)
+                            .finally(() => { resize_unit() })
+
                     },
                     error: function (xhr, status, error) {
                         _ajax_error(xhr, status, error, msg => common_msg(msg, 'error'))

@@ -236,7 +236,9 @@ function AssignmentXBlock(runtime, element) {
 
             if (data.type === "learningprojectxblock") {
                 if (data.reload) {
-                    init().catch(console.error)
+                    init().catch(console.error).finally(() => {
+                        resize_unit()
+                    })
                 }
             }
         });

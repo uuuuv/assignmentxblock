@@ -462,6 +462,10 @@
 }
 
 /**************************** submission_response *****************************/
+#submission-results {
+  padding-top: 2em;
+}
+
 #reviewer-note-content {
   padding: 1.5em;
   border-radius: var(--border-radius);
