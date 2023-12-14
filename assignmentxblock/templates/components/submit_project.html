@@ -12,7 +12,7 @@
     <div class='lpx-mb-2'>
         <h4 class='lpx-heading-3'>{% trans 'Upload zip file' %}</h4>
     
-        <p>{% trans 'Compress your files into a single zip file, up to 500 MB.' %}</p>
+        <p>{% trans 'Compress your files into a single zip file, up to '%}{{max_file_size}} MB.</p>
 
         <div style="display: flex">
         <label for="file-input" class="{% if file_url %}{{'d-none'}}{% endif %} lpx-btn lpx-btn-primary">{% trans 'Select file' %}</label>

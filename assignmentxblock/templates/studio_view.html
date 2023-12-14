@@ -2,11 +2,12 @@
 {% load static %}
 
 <div id='lpx-studio' style="padding-bottom: 60px;">
-    <div class='lpx-form-group'>
+    <div class='lpx-form-group' >
       <label>Is Result Unit</label>
-      <input name="is-result-unit" type="checkbox" {% if is_result_unit %}checked{% endif %} />
+        <input style="display: inline-block;width: auto;transform: scale(1.5);" name="is-result-unit" type="checkbox" {% if is_result_unit %}checked{% endif %} />
     </div>
 
+  <div id='unit1-fields'>
     <div class='lpx-form-group'>
       <label>Max File Size <i>(MB)</i></label>
       <input name="max-file-size" type="number" value="{{max_file_size}}" />
@@ -26,6 +27,7 @@
       <label>Instruction</label>
       <div id='html_content'></div>
     </div>
+  </div>
 </div>
 
 <div class="lpx_editor_buttons xblock-actions modal-actions">

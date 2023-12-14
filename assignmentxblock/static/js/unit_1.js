@@ -75,17 +75,7 @@ function AssignmentXBlock(runtime, element) {
                     res(response.data)
                 },
                 error: function (xhr, status, error) {
-                    console.error(xhr, status, error);
-                    if (xhr.responseJSON) {
-                        if (typeof xhr.responseJSON.message === 'string') {
-                            rej(xhr.responseJSON.message);
-                        }
-
-                        if (typeof xhr.responseJSON.error === 'string') {
-                            rej(xhr.responseJSON.error);
-                        }
-                    }
-                    rej("Internal Server Error");
+                    _ajax_error(xhr, status, error, rej)
                 },
             });
         })
@@ -173,12 +163,14 @@ function AssignmentXBlock(runtime, element) {
 
             if (fileErrorMsg) return;
 
+            _togger_uploading_file(true)
             _upload_file().then(res => {
                 _toggle_next_step_to_submit(true);
             }).catch(msg => {
-                console.error(msg)
                 common_msg(msg, 'error')
                 _toggle_next_step_to_submit(false);
+            }).finally(() => {
+                _togger_uploading_file(false)
             })
         });
 
@@ -220,7 +212,6 @@ function AssignmentXBlock(runtime, element) {
                 _toggle_display("#submission-note-container", false);
 
                 // clear the file error message if there is one
-                // _toggle_file_error_msg('');
                 common_msg('')
                 _toggle_submit_error('')
 
@@ -313,7 +304,6 @@ function AssignmentXBlock(runtime, element) {
     }
 
     function _is_valid_to_submit() {
-        console.log('_is_valid_to_submit')
         let allTermsAreChecked = true;
 
         $(".term-item input", element).each(function () {
@@ -332,6 +322,7 @@ function AssignmentXBlock(runtime, element) {
         // _toggle_loading_modal(true);
         _toggle_submit_error("")
         _submit_to_portal().then(() => {
+            scroll_to_top(-10000)
             localStorage.setItem('should_scroll_to_status_position', '1')
             _post_message({
                 reload: true
@@ -355,7 +346,6 @@ function AssignmentXBlock(runtime, element) {
         const file = Array.from($("#file-input", element).prop("files"))[0];
         const formData = new FormData();
         formData.append('file', file);
-        _togger_uploading_file(true)
         return new Promise((res, rej) => {
             $.ajax({
                 url: runtime.handlerUrl(element, "learning_project_upload_file"),
@@ -367,18 +357,8 @@ function AssignmentXBlock(runtime, element) {
                     $('#portal-data').data('file-url', response.file_url)
                     $('#portal-data').data('file-name', response.file_name)
                     res(response);
-                    _togger_uploading_file(false)
                 }, error: function (xhr, status, error) {
-                    console.error(xhr, status, error);
-
-                    if (xhr.responseJSON) {
-                        if (xhr.status === 413 && xhr?.responseJSON?.success) {
-                            rej(xhr.responseJSON.success);
-                        }
-                        rej(xhr.responseJSON.message);
-                    }
-                    rej("Internal Server Error");
-                    _togger_uploading_file(false)
+                    _ajax_error(xhr, status, error, rej)
                 }
             })
         })
@@ -411,13 +391,7 @@ function AssignmentXBlock(runtime, element) {
                         res(response);
                     },
                     error: function (xhr, status, error) {
-                        console.error(xhr, status, error);
-
-                        if (xhr?.responseJSON?.message) {
-                            rej(xhr.responseJSON.message);
-                        } else {
-                            rej("Internal Server Error");
-                        }
+                        _ajax_error(xhr, status, error, rej)
                     },
                 });
             }).catch(msg => rej(msg))
@@ -493,8 +467,6 @@ function AssignmentXBlock(runtime, element) {
     function _init_cancel_submission_handler(submit_date = 0) {
         if (submit_date === 0) return
 
-
-
         const limit = 1800
         const remain_sec = limit - (Math.round(Date.now() / 1000) - submit_date)
         if (remain_sec > 0) {
@@ -517,21 +489,7 @@ function AssignmentXBlock(runtime, element) {
                         init(undefined, { should_show_resubmit: true, client_common_message: gettext('You have successfully canceled'), client_common_message_state: 'success' }).catch(console.error).finally(() => { resize_unit() })
                     },
                     error: function (xhr, status, error) {
-                        let cancel_error = ''
-                        if (xhr.responseJSON) {
-                            if (typeof xhr.responseJSON.message === 'string') {
-                                cancel_error = xhr.responseJSON.message
-                            }
-
-                            if (typeof xhr.responseJSON.error === 'string') {
-                                cancel_error = xhr.responseJSON.error
-                            }
-                        } else {
-                            cancel_error = gettext('Internal Server Error')
-                        }
-
-                        console.error(cancel_error)
-                        common_msg(cancel_error, 'error')
+                        _ajax_error(xhr, status, error, msg => common_msg(msg, 'error'))
                     },
                 });
             })
@@ -577,15 +535,7 @@ function AssignmentXBlock(runtime, element) {
                     $('#portal-data', element).data('submission-note', submission_note)
                     res(submission_note);
                 }, error: function (xhr, status, error) {
-                    console.error(xhr, status, error);
-
-                    if (xhr.responseJSON) {
-                        if (xhr.status === 413 && xhr?.responseJSON?.success) {
-                            rej(xhr.responseJSON.success);
-                        }
-                        rej(xhr.responseJSON.message);
-                    }
-                    rej("Internal Server Error");
+                    _ajax_error(xhr, status, error, rej)
                 }
             })
         })
@@ -618,6 +568,20 @@ function AssignmentXBlock(runtime, element) {
             $('#resubmit-container', element).removeClass('d-none')
             resize_unit()
         })
+    }
+
+    function _ajax_error(xhr, status, error, cb) {
+        console.error(xhr, status, error)
+
+        if (xhr.staus === 413 && xhr?.responseJSON?.success) return cb(xhr.responseJSON.success)
+
+        if (xhr?.responseJSON?.message) return cb(xhr.responseJSON.message)
+
+        if (xhr?.responseJSON?.error) return cb(xhr.responseJSON.error)
+
+        if (typeof error === 'string') return cb(error)
+
+        return cb("Internal Server Error");
     }
 
 }

@@ -10,6 +10,23 @@ function AssignmentXBlock(runtime, element) {
         modal_actions.removeClass('modal-actions')
         modal_actions.remove()
 
+        if ($('input[name=is-result-unit]', element).prop('checked')) {
+            console.log('should hide')
+            $('#unit1-fields', element).addClass('d-none')
+        } else {
+            $('#unit1-fields', element).removeClass('d-none')
+            console.log('should show')
+        }
+
+        $('input[name=is-result-unit]', element).change(function () {
+            console.log('changing input')
+            if (this.checked) {
+                $('#unit1-fields', element).addClass('d-none')
+            } else {
+                $('#unit1-fields', element).removeClass('d-none')
+            }
+        })
+
         $('.lpx_save_button', element).click(function (eventObject) {
             eventObject.preventDefault();
 

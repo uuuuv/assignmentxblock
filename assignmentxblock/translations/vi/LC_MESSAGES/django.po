@@ -126,8 +126,8 @@ msgid "Upload zip file"
 msgstr "Tải lên file zip"
 
 #: templates/components/submit_project.html
-msgid "Compress your files into a single zip file, up to 500 MB."
-msgstr "Nén các file của bạn thành một file zip duy nhất, tối đa 500 MB."
+msgid "Compress your files into a single zip file, up to "
+msgstr "Nén các file của bạn thành một file zip duy nhất, tối đa "
 
 #: templates/components/submit_project.html
 msgid "Select file"

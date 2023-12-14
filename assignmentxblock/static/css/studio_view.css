@@ -1,0 +1,25 @@
+/* STUDIO  */
+.lpx-form-group {
+    padding: 1em;
+}
+
+.lpx-form-group label {
+    display: block;
+    font-weight: 500;
+    padding-bottom: 0.5em;
+    font-family: inherit;
+    font-size: 1em;
+}
+
+.lpx-form-group:not(.lpx-html-editor) input {
+    padding: .5em;
+    width: 100%;
+    border-radius: 6px;
+    display: block;
+    border: 1px solid #e5e5e5;
+    outline: none;
+}
+
+.d-none {
+    display: none;
+}
