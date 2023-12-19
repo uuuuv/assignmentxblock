@@ -7,8 +7,15 @@ def get_config(env_key, default = None):
 
 def get_site_config(domain, setting_name, default_value=None):
     try:
-        site = Site.objects.get(domain=domain)
-        site_config = SiteConfiguration.objects.get(site=site)
+        site = Site.objects.filter(domain=domain).first()
+        if site is None: 
+            print('NOT FOUND SITE WHEN GETTING SITE CONFIG FROM ASSIGNMENTXBLOCK')
+            return default_value
+        site_config = SiteConfiguration.objects.filter(site=site).first()
+        if site_config is None:
+            print('NOT FOUND SITE WHEN GETTING SITE CONFIG FROM ASSIGNMENTXBLOCK')
+            return default_value
+
         return site_config.get_value(setting_name, default_value)
     except Exception as e:
         print(str(e))
