@@ -3,9 +3,7 @@ from web_fragments.fragment import Fragment
 from xblock.core import XBlock
 from .config import (
     get_config, 
-    PORTAL_SUBMIT_URL,
-    PORTAL_GET_SUBMISSION_URL,
-    PORTAL_CANCEL_SUBMISSION_URL
+    get_site_config
 )
 import logging
 from xblock.fields import Integer, Scope, String, XMLString, Boolean
@@ -323,6 +321,15 @@ class AssignmentXBlock(XBlock):
 
     def _get_general_context(self): 
         # create file_accepts for file input
+
+        LMS_BASE = get_config('LMS_BASE')
+        PORTAL_HOST = get_site_config(LMS_BASE, 'PORTAL_HOST', 'localhost:18000')
+
+        # api
+        PORTAL_GET_SUBMISSION_URL = f"{PORTAL_HOST}/api/v1/project/user"
+        PORTAL_SUBMIT_URL = f"{PORTAL_HOST}/api/v1/project/submission"
+        PORTAL_CANCEL_SUBMISSION_URL = f"{PORTAL_HOST}/api/v1/project/submission/cancel"
+
         file_input_accepts = ', '.join(list(map(lambda ext: f'.{ext}', self.allowed_file_types.split(','))))
         context = {
             "email": self.get_user_email(),

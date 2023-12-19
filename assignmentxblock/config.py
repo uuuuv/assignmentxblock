@@ -21,11 +21,11 @@ def get_site_config(domain, setting_name, default_value=None):
         print(str(e))
         return None
     
-LMS_BASE = get_config('LMS_BASE')
-PORTAL_HOST = get_site_config(LMS_BASE, 'PORTAL_HOST', 'localhost:18000')
+# LMS_BASE = get_config('LMS_BASE')
+# PORTAL_HOST = get_site_config(LMS_BASE, 'PORTAL_HOST', 'localhost:18000')
 
-# api
-PORTAL_GET_SUBMISSION_URL = f"{PORTAL_HOST}/api/v1/project/user"
-PORTAL_SUBMIT_URL = f"{PORTAL_HOST}/api/v1/project/submission"
-PORTAL_CANCEL_SUBMISSION_URL = f"{PORTAL_HOST}/api/v1/project/submission/cancel"
+# # api
+# PORTAL_GET_SUBMISSION_URL = f"{PORTAL_HOST}/api/v1/project/user"
+# PORTAL_SUBMIT_URL = f"{PORTAL_HOST}/api/v1/project/submission"
+# PORTAL_CANCEL_SUBMISSION_URL = f"{PORTAL_HOST}/api/v1/project/submission/cancel"
 
