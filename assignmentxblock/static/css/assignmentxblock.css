@@ -466,6 +466,12 @@
   padding-top: 2em;
 }
 
+.criterion-header-angle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 #reviewer-note-content {
   padding: 1.5em;
   border-radius: var(--border-radius);
@@ -587,25 +593,8 @@ li.criterion:first-of-type .criterion-header {
 }
 
 .criterion-feedback-inner .feedback-content {
-  padding: 1em;
   border-radius: 6px;
-  background-color: rgba(216, 44, 13, 0.05);
   margin-bottom: 1em;
-}
-
-.criterion-feedback-inner .feedback-content.passed {
-  background-color: rgba(90, 164, 71, 0.05);
-}
-
-.feedback-content img {
-  display: block;
-  width: 100%;
-  border: 2px solid var(--color-accent-critical);
-  margin: 1em 0;
-}
-
-.feedback-content.passed img {
-  border: 2px solid var(--color-accent-success);
 }
 
 /* submission_history  */
@@ -890,4 +879,68 @@ li.criterion:first-of-type .criterion-header {
 
 #lpx #common-message.error svg:last-of-type {
   display: none;
+}
+
+/* these css are copied from portal, need to tidy  */
+#lpx .odoo_criterion img {
+  width: 100%;
+  border: 2px solid #D82C0D;
+  display: block;
+  margin: 1em 0 0 0;
+}
+
+#lpx .odoo_criterion.passed img {
+  border: 2px solid #5AA447;
+}
+
+#lpx .odoo_criterion.passed {
+  background: rgba(90, 164, 71, 0.05);
+}
+
+
+#lpx .odoo_criterion.passed {
+  background: rgba(90, 164, 71, 0.05);
+}
+
+#lpx .odoo_criterion.did_not_pass {
+  background: rgba(216, 44, 13, 0.05);
+}
+
+#lpx .preview_criterion_error_message {
+  text-align: center;
+  color: #D82C0D;
+}
+
+#lpx .preview_criterion_feedback a {
+  font-weight: 500;
+  color: #0086ff;
+}
+
+#lpx .pointer_events_none {
+  pointer-events: none;
+}
+
+#lpx ul.odoo_criteria {
+  padding: 0;
+  margin: 0 0 1em 0;
+  list-style-type: none !important;
+}
+
+#lpx ul.odoo_criteria.incomplete {
+  list-style-type: disc !important;
+  padding-left: 1em !important;
+}
+
+#lpx .odoo_criteria>li {
+  padding: 1em;
+  border-radius: 6px;
+  margin-bottom: 1em;
+}
+
+#lpx .odoo_criteria.incomplete>li {
+  padding: 0;
+}
+
+#lpx .odoo_criterion_general_response {
+  margin-bottom: 1em;
 }

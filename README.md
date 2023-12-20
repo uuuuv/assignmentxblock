@@ -1,5 +1,8 @@
 # Assignment XBlock
 
+Thay đổi ở version 0.3.0: 
+- Chấm và hiển thị kết quả theo từng đặc tả. Không nhận xét chung nữa. 
+
 ## Requirements
 
 Might get 403 if use different package versions.

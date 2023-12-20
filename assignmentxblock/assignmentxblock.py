@@ -130,7 +130,6 @@ class AssignmentXBlock(XBlock):
         rendered_html = template.render(Context(context))
         frag = Fragment(rendered_html)
         frag.add_css(self.resource_string(CSS_PATH))
-        # frag.add_javascript(self.resource_string(JS_PATH))
         if self.is_result_unit:
             frag.add_javascript(self.resource_string('static/js/unit_2.js'))
         else: 
@@ -323,7 +322,7 @@ class AssignmentXBlock(XBlock):
         # create file_accepts for file input
 
         LMS_BASE = get_config('LMS_BASE')
-        PORTAL_HOST = get_site_config(LMS_BASE, 'PORTAL_HOST', 'localhost:18000')
+        PORTAL_HOST = get_site_config(LMS_BASE, 'PORTAL_HOST', 'localhost:8069')
 
         # api
         PORTAL_GET_SUBMISSION_URL = f"{PORTAL_HOST}/api/v1/project/user"
