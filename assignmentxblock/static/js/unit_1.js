@@ -7,6 +7,7 @@ function AssignmentXBlock(runtime, element) {
     $(function ($) {
         init().catch(console.error)
 
+
         window.addEventListener('message', (event) => {
             const data = event.data
 
@@ -31,6 +32,22 @@ function AssignmentXBlock(runtime, element) {
         }
         const template = await _get_template({ ...initialData, ...additional_data });
         _render_template(initialData, template);
+
+        if (additional_data.should_scroll_to_ele) {
+            if (additional_data.should_scroll_to_ele === 'none') {
+                scroll_to_ele()
+            } else if (additional_data.should_scroll_to_ele === 'element') {
+                scroll_to_ele(element)
+            } else {
+                const ele = document.querySelector(additional_data.should_scroll_to_ele)
+                if (ele) {
+                    scroll_to_ele(ele)
+                }
+            }
+        }
+
+
+
         setTimeout(() => {
             if ($('.client_common_message', element).length) {
                 common_msg('')
@@ -333,25 +350,22 @@ function AssignmentXBlock(runtime, element) {
     }
 
     function submit() {
-
-        // _toggle_loading_modal(true);
         _toggle_submit_error("")
         _submit_to_portal().then(() => {
-            scroll_to_top(-10000)
-            localStorage.setItem('should_scroll_to_status_position', '1')
             _post_message({
                 reload: true
             })
             _delete_file().catch(console.error)
             init(undefined, {
                 client_common_message: gettext('You submitted your assignment successfully'),
-                client_common_message_state: 'success'
+                client_common_message_state: 'success',
+                should_scroll_to_ele: "element"
             }).catch(console.error).finally(() => {
                 resize_unit()
             })
 
-        }).catch(error => {
-            _toggle_loading_modal(false);
+        }).catch(error_msg => {
+            common_msg(error_msg, 'error')
         });
 
     }
@@ -431,19 +445,11 @@ function AssignmentXBlock(runtime, element) {
         }
     }
 
-
-    function scroll_to_top(top) {
-
-        let position;
-        if (typeof top === 'undefined') {
-            position = element.getBoundingClientRect().top + window.scrollY - LMS_HEADER_HEIGHT // 100 is for header height
-        } else {
-            position = top
-        }
-
+    function scroll_to_ele(ele) {
+        const top = !ele ? -1 : ele.getBoundingClientRect().top;
         _post_message({
             scroll: {
-                top: position
+                top: top
             }
         })
     }
