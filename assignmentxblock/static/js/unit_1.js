@@ -157,7 +157,6 @@ function AssignmentXBlock(runtime, element) {
         }
 
         _toggle_loading_modal(false);
-        // resize_unit()
     }
 
 
@@ -506,7 +505,12 @@ function AssignmentXBlock(runtime, element) {
                     headers: { "Content-Type": "application/json" },
                     success: function (response) {
                         _delete_file().catch(console.error)
-                        init(undefined, { should_show_resubmit: true, client_common_message: gettext('You have successfully canceled'), client_common_message_state: 'success' }).catch(console.error).finally(() => {
+                        init(undefined, {
+                            should_show_resubmit: true,
+                            client_common_message: gettext('You have successfully canceled'),
+                            client_common_message_state: 'success',
+                            should_scroll_to_ele: "element",
+                        }).catch(console.error).finally(() => {
                             _post_message({
                                 reload: true
                             })
