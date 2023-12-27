@@ -9,7 +9,7 @@
 
     {% if submission.result == 'did_not_pass' or submission.result == 'unable_to_review'%}
         {% if not should_show_resubmit %}
-            <button id="resubmit-btn" class="lpx-btn lpx-btn-secondary">Resubmit</button>
+            <button id="resubmit-btn" class="lpx-btn lpx-btn-secondary">{% trans "Resubmit" %}</button>
         {% endif %}
 
         <div id="resubmit-container" class="{% if not should_show_resubmit %}d-none{% endif %}">

@@ -24,3 +24,11 @@ msgstr "Không tìm thấy dự án nào"
 # static/js/assignmentxblock.js
 msgid "Submission date: "
 msgstr "Ngày nộp: "
+
+#: templates/components/submission_status.html
+msgid "You submitted your assignment successfully"
+msgstr "Bạn nộp bài thành công"
+
+#: templates/components/submission_status.html
+msgid "You have successfully canceled"
+msgstr "Bạn đã hủy thành công"

@@ -55,7 +55,7 @@ class AssignmentXBlock(XBlock):
     html_content = XMLString(
         help="HTML data for the project",
         scope=Scope.content,
-        default=""
+        default="<div></div>"
     )
 
     submission_note = String(

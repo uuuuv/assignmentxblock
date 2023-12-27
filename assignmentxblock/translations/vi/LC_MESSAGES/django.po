@@ -109,14 +109,6 @@ msgstr "Bạn chưa nộp bài"
 msgid "See results"
 msgstr "Xem kết quả"
 
-#: templates/components/submission_status.html
-msgid "You have successfully canceled"
-msgstr "Bạn đã hủy thành công"
-
-#: templates/components/submission_status.html
-msgid "You submitted your assignment successfully"
-msgstr "Bạn nộp bài thành công"
-
 #: templates/components/submit_project.html
 msgid "Submit project"
 msgstr "Nộp dự án"
@@ -171,10 +163,6 @@ msgstr "Nộp dự án"
 
 #: templates/components/submit_project.html
 msgid "Resubmit project"
-msgstr "Nộp lại dự án"
-
-#: templates/components/submit_project.html
-msgid "Reubmit Project"
 msgstr "Nộp lại dự án"
 
 #: templates/components/submit_project.html
